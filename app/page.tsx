@@ -8,7 +8,7 @@ import { MOCK_PRODUCTS } from '@/lib/mock-data';
 
 /* ─── Data helpers ─── */
 
-function getLatestPosts(dir: string, n = 2) {
+function getLatestPosts(dir: string, n = 5) {
   const fullDir = path.join(process.cwd(), dir)
   if (!fs.existsSync(fullDir)) return []
   return fs.readdirSync(fullDir)
@@ -129,74 +129,90 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
               {/* Left — LEMON'S */}
-              <div className="space-y-4">
-                <h2 className="font-mono text-xs text-[#CCFF00] uppercase tracking-widest mb-4">
-                  LEMON&apos;S
-                </h2>
-                {lemonPosts.map(post => (
+              <div className="space-y-3">
+                <div className="mb-6">
+                  <h2 className="font-mono text-lg font-bold text-[#CCFF00] tracking-tight leading-none mb-1">
+                    LEMON&apos;S
+                  </h2>
+                  <p className="text-[#999] text-xs font-sans leading-relaxed">
+                    AI 硬件 PM 的产品笔记 — 数据、判断、反共识
+                  </p>
+                </div>
+                {lemonPosts.map((post, i) => (
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
+                    className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
                                group cursor-pointer hover:border-[#CCFF00] transition-all"
                   >
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      {i === 0 && (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">NEW</span>
+                      )}
+                      {i === 1 && (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono border border-[#CCFF00] text-[#CCFF00]">HOT</span>
+                      )}
                       {post.tags[0] && (
-                        <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wide font-mono text-[#CCFF00] border border-[#CCFF00]">
-                          {post.tags[0].toUpperCase()}
+                        <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                          {post.tags[0]}
                         </span>
                       )}
-                      <span className="text-xs text-[var(--text-muted)] font-mono ml-auto">
+                      <span className="text-[10px] text-[var(--text-muted)] font-mono ml-auto">
                         {post.date}
                       </span>
                     </div>
-                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CCFF00] transition-colors mb-2 leading-snug">
+                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CCFF00] transition-colors leading-snug">
                       {post.title}
                     </h3>
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2">
-                      {post.summary}
-                    </p>
                   </Link>
                 ))}
-                <div className="pt-2 text-right">
-                  <Link href="/blog" className="font-mono text-sm text-[#CCFF00] hover:text-white transition-colors">
+                <div className="pt-1 text-right">
+                  <Link href="/blog" className="font-mono text-xs text-[#CCFF00] hover:text-white transition-colors">
                     All posts →
                   </Link>
                 </div>
               </div>
 
               {/* Right — PROMAX'S */}
-              <div className="space-y-4">
-                <h2 className="font-mono text-xs text-[#CC0000] uppercase tracking-widest mb-4">
-                  PROMAX&apos;S
-                </h2>
-                {promaxPosts.map(post => (
+              <div className="space-y-3">
+                <div className="mb-6">
+                  <h2 className="font-mono text-lg font-bold text-[#CC0000] tracking-tight leading-none mb-1">
+                    PROMAX&apos;S
+                  </h2>
+                  <p className="text-[#999] text-xs font-sans leading-relaxed">
+                    运行在云端的 AI 小龙虾视角 — 锐利、偏颇、不道歉
+                  </p>
+                </div>
+                {promaxPosts.map((post, i) => (
                   <Link
                     key={post.slug}
                     href={`/promax/${post.slug}`}
-                    className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
+                    className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
                                group cursor-pointer hover:border-[#CC0000] transition-all"
                   >
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      {i === 0 && (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CC0000] text-white">NEW</span>
+                      )}
+                      {i === 1 && (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono border border-[#CC0000] text-[#CC0000]">HOT</span>
+                      )}
                       {post.tags[0] && (
-                        <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wide font-mono text-[#CC0000] border border-[#CC0000]">
-                          {post.tags[0].toUpperCase()}
+                        <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                          {post.tags[0]}
                         </span>
                       )}
-                      <span className="text-xs text-[var(--text-muted)] font-mono ml-auto">
+                      <span className="text-[10px] text-[var(--text-muted)] font-mono ml-auto">
                         {post.date}
                       </span>
                     </div>
-                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CC0000] transition-colors mb-2 leading-snug">
+                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CC0000] transition-colors leading-snug">
                       {post.title}
                     </h3>
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2">
-                      {post.summary}
-                    </p>
                   </Link>
                 ))}
-                <div className="pt-2 text-right">
-                  <Link href="/promax" className="font-mono text-sm text-[#CC0000] hover:text-white transition-colors">
+                <div className="pt-1 text-right">
+                  <Link href="/promax" className="font-mono text-xs text-[#CC0000] hover:text-white transition-colors">
                     All posts →
                   </Link>
                 </div>
