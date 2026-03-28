@@ -15,9 +15,9 @@ const XIcon = ({ className }: { className?: string }) => (
 );
 
 const socialIcons = [
-  { icon: XIcon, href: '#', label: 'X' },
-  { icon: Github, href: '#', label: 'GitHub' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { icon: XIcon, href: 'https://x.com/Lemonning0624', label: 'X' },
+  { icon: Github, href: 'https://github.com/MakerCore/lemon-wang', label: 'GitHub' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/lemonwang0624', label: 'LinkedIn' },
   { icon: MessageCircle, href: '#', label: '公众号' },
   { icon: BookOpen, href: '#', label: '小红书' },
 ];
