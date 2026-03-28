@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import Navbar from '@/components/Navbar'
 import './globals.css'
 
 // Replace G-XXXXXXXXXX with your GA4 Measurement ID
@@ -21,6 +22,7 @@ export default function RootLayout({
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>" />
       </head>
       <body>
+        <Navbar />
         {children}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}

@@ -27,7 +27,7 @@ export default function BlogPage() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-16 max-w-3xl mx-auto">
       <h1 className="font-mono text-[#CCFF00] text-2xl mb-12 tracking-tight">
-        WRITING
+        LABNOTES
       </h1>
       <ul className="space-y-8">
         {posts.map(post => (

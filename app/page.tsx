@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { MOCK_POSTS, MOCK_PRODUCTS } from '@/lib/mock-data';
 
@@ -74,7 +73,6 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
       <main className="pt-14">
         <div className="max-w-5xl mx-auto px-4 py-5">
           <div className="bento-grid animate-fade-up">
