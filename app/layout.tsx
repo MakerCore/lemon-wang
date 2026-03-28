@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar'
 import './globals.css'
 
 // Replace G-XXXXXXXXXX with your GA4 Measurement ID
-const GA_ID = 'G-XXXXXXXXXX'
+const GA_ID = 'G-4FTC43XTXD'
 
 export const metadata: Metadata = {
   title: 'lemon.wang',
