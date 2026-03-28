@@ -142,7 +142,7 @@ export default function Home() {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
+                    className="flex flex-col min-h-[110px] bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
                                group cursor-pointer hover:border-[#CCFF00] transition-all"
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -161,9 +161,12 @@ export default function Home() {
                         {post.date}
                       </span>
                     </div>
-                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CCFF00] transition-colors leading-snug">
+                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CCFF00] transition-colors leading-snug mb-2">
                       {post.title}
                     </h3>
+                    <p className="text-[11px] text-[#999] leading-relaxed line-clamp-2 mt-auto">
+                      {post.summary}
+                    </p>
                   </Link>
                 ))}
                 <div className="pt-1 text-right">
@@ -187,7 +190,7 @@ export default function Home() {
                   <Link
                     key={post.slug}
                     href={`/promax/${post.slug}`}
-                    className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
+                    className="flex flex-col min-h-[110px] bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
                                group cursor-pointer hover:border-[#CC0000] transition-all"
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -206,9 +209,12 @@ export default function Home() {
                         {post.date}
                       </span>
                     </div>
-                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CC0000] transition-colors leading-snug">
+                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CC0000] transition-colors leading-snug mb-2">
                       {post.title}
                     </h3>
+                    <p className="text-[11px] text-[#999] leading-relaxed line-clamp-2 mt-auto">
+                      {post.summary}
+                    </p>
                   </Link>
                 ))}
                 <div className="pt-1 text-right">
