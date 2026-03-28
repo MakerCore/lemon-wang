@@ -33,13 +33,13 @@ export default function BlogPage() {
         {posts.map(post => (
           <li key={post.slug} className="border-b border-white/10 pb-8">
             <Link href={`/blog/${post.slug}`} className="group block">
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {post.tags.map((tag: string) => (
-                  <span key={tag} className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wide font-mono text-[#CCFF00] border border-[#CCFF00]">
-                    {tag.toUpperCase()}
+              {post.tags[0] && (
+                <div className="mb-3">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wide font-mono text-[#CCFF00] border border-[#CCFF00]">
+                    {post.tags[0].toUpperCase()}
                   </span>
-                ))}
-              </div>
+                </div>
+              )}
               <h2 className="font-mono text-white text-lg group-hover:text-[#CCFF00] transition-colors mb-2">
                 {post.title}
               </h2>

@@ -167,10 +167,10 @@ export default function Home() {
               {/* LabNotes Cards */}
               <div className="space-y-4">
                 <h2 className="font-mono text-xs text-[var(--text-muted)] uppercase tracking-widest mb-4">
-                  LabNotes Latest
+                  LABNOTES
                 </h2>
                 <Link
-                  href={`/labnotes/${lat1.slug}`}
+                  href={`/blog/${lat1.slug}`}
                   className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
                              group cursor-pointer hover:border-[var(--highlight)] transition-all"
                 >
@@ -189,7 +189,7 @@ export default function Home() {
                   </p>
                 </Link>
                 <Link
-                  href={lat2.tags.includes('music') ? '/music' : `/labnotes/${lat2.slug}`}
+                  href={lat2.tags.includes('music') ? '/music' : `/blog/${lat2.slug}`}
                   className="block bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
                              group cursor-pointer hover:border-[var(--highlight)] transition-all"
                 >
@@ -207,6 +207,14 @@ export default function Home() {
                     {lat2.body.slice(0, 100)}…
                   </p>
                 </Link>
+                <div className="pt-2 text-right">
+                  <Link
+                    href="/blog"
+                    className="font-mono text-sm text-[var(--accent)] hover:text-[var(--highlight)] transition-colors"
+                  >
+                    All posts →
+                  </Link>
+                </div>
               </div>
 
               {/* Products Cards */}

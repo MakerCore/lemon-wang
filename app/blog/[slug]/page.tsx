@@ -46,7 +46,7 @@ const mdxComponents = {
   h3: (props: any) => (
     <h3
       {...props}
-      className="font-mono text-[#CCFF00] text-[15px] font-bold mt-10 mb-4 border-l-2 border-[#CCFF00] pl-3 leading-snug not-prose"
+      className="font-mono text-white text-xl font-bold mt-12 mb-4 leading-snug not-prose"
     />
   ),
 }
@@ -62,7 +62,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         href="/blog"
         className="text-[#999] font-mono text-xs hover:text-[#CCFF00] transition-colors mb-12 block"
       >
-        ← WRITING
+        ← LABNOTES
       </a>
 
       {/* Tags — all of them */}
