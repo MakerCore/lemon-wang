@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const workGroups = [
   {
@@ -37,6 +37,29 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredLabnote, setHoveredLabnote] = useState('');
 
+  const workTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toolsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const labnotesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function makeHandlers(
+    setOpen: (v: boolean) => void,
+    timer: React.MutableRefObject<ReturnType<typeof setTimeout> | null>
+  ) {
+    return {
+      onMouseEnter: () => {
+        if (timer.current) clearTimeout(timer.current);
+        setOpen(true);
+      },
+      onMouseLeave: () => {
+        timer.current = setTimeout(() => setOpen(false), 200);
+      },
+    };
+  }
+
+  const workHandlers = makeHandlers(setWorkOpen, workTimer);
+  const toolsHandlers = makeHandlers(setToolsOpen, toolsTimer);
+  const labnotesHandlers = makeHandlers(setLabnotesOpen, labnotesTimer);
+
   return (
     <nav className="sticky top-0 z-50 bg-[var(--bg-primary)] border-b border-[var(--border)]">
       <div className="max-w-5xl mx-auto px-4">
@@ -48,13 +71,13 @@ export default function Navbar() {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
             {/* Work dropdown */}
-            <div className="relative" onMouseEnter={() => setWorkOpen(true)} onMouseLeave={() => setWorkOpen(false)}>
+            <div className="relative" {...workHandlers}>
               <button className={`font-mono text-sm transition-colors duration-200 flex items-center gap-1 relative ${workOpen ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'}`}>
                 Work
                 <span className="absolute -top-1 -right-2 w-[6px] h-[6px] rounded-full bg-[var(--red)]" />
               </button>
               {workOpen && (
-                <div className="absolute top-full left-0 mt-1 w-64 bg-[var(--bg-card)] border border-[var(--border)] rounded-lg py-3 shadow-lg">
+                <div className="absolute top-full left-0 mt-1 w-64 bg-[var(--bg-card)] border border-[var(--border)] rounded-lg py-3 shadow-lg" {...workHandlers}>
                   {workGroups.map((group, groupIndex) => (
                     <div key={group.title}>
                       {groupIndex > 0 && <div className="border-t border-[var(--border)] my-2" />}
@@ -82,12 +105,12 @@ export default function Navbar() {
             </div>
 
             {/* Tools dropdown */}
-            <div className="relative" onMouseEnter={() => setToolsOpen(true)} onMouseLeave={() => setToolsOpen(false)}>
+            <div className="relative" {...toolsHandlers}>
               <button className={`font-mono text-sm transition-colors duration-200 ${toolsOpen ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'}`}>
                 Tools
               </button>
               {toolsOpen && (
-                <div className="absolute top-full left-0 mt-1 w-52 bg-[#0a0a0a] border border-[var(--border)] rounded-lg py-2 shadow-xl">
+                <div className="absolute top-full left-0 mt-1 w-52 bg-[#0a0a0a] border border-[var(--border)] rounded-lg py-2 shadow-xl" {...toolsHandlers}>
                   {toolsLinks.map((item) => (
                     <a key={item.label} href={item.href} className="block px-4 py-2.5 font-mono text-sm text-[var(--text-secondary)] hover:text-[#CCFF00] transition-colors duration-150">
                       {item.label}
@@ -98,12 +121,12 @@ export default function Navbar() {
             </div>
 
             {/* LabNotes dropdown */}
-            <div className="relative" onMouseEnter={() => setLabnotesOpen(true)} onMouseLeave={() => setLabnotesOpen(false)}>
+            <div className="relative" {...labnotesHandlers}>
               <button className={`font-mono text-sm transition-colors duration-200 ${labnotesOpen ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'}`}>
                 LabNotes
               </button>
               {labnotesOpen && (
-                <div className="absolute top-full left-0 mt-1 w-44 bg-[#0a0a0a] border border-[var(--border)] rounded-lg py-2 shadow-xl">
+                <div className="absolute top-full left-0 mt-1 w-44 bg-[#0a0a0a] border border-[var(--border)] rounded-lg py-2 shadow-xl" {...labnotesHandlers}>
                   {labnotesLinks.map((item) => (
                     <a
                       key={item.label}
