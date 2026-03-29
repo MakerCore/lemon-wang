@@ -22,6 +22,7 @@ const workGroups = [
 
 const toolsLinks = [
   { label: 'ROI Calculator', href: '/tools/print-cost' },
+  { label: "User's Voice Data Engine", href: '/tools/uv-data-engine' },
 ];
 
 const labnotesLinks = [

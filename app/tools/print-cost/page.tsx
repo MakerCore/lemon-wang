@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Navbar from '@/components/Navbar';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface CalcResult {
@@ -98,8 +97,6 @@ export default function PrintCostPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      <Navbar />
-
       <div className="max-w-5xl mx-auto px-4 pt-24 pb-20">
         {/* Page header */}
         <div className="mb-10">
