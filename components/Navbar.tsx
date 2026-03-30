@@ -2,7 +2,19 @@
 
 import { useState, useRef } from 'react';
 
-const workGroups = [
+interface WorkItem {
+  label: string;
+  href?: string;
+  disabled: boolean;
+  comingSoon?: string;
+}
+
+interface WorkGroup {
+  title: string;
+  items: WorkItem[];
+}
+
+const workGroups: WorkGroup[] = [
   {
     title: 'INTELLIGENCE',
     items: [
