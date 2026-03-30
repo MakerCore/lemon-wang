@@ -58,33 +58,38 @@ export default function Home() {
             </div>
 
             {/* ── USER'S VOICE ── */}
-            <a
-              href="https://fdm-multicolor.usersvoice.lemon.wang"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bento-voice bg-[var(--highlight)] border border-[var(--highlight)]/20 rounded-[var(--radius-lg)] p-6
-                         flex flex-col cursor-pointer group transition-all hover:brightness-110"
-            >
+            <div className="bento-voice bg-[var(--highlight)] border border-[var(--highlight)]/20 rounded-[var(--radius-lg)] p-6 flex flex-col">
               <span className="font-mono text-[10px] text-black/60 uppercase tracking-wider mb-4">
                 USER&apos;S VOICE · COMPETITIVE INTELLIGENCE
               </span>
               <p className="font-mono text-base lg:text-lg font-bold text-black leading-relaxed mb-auto">
-                310 real user voices.
+                1,486 real user voices.
                 <br />
-                Prusa makes you want to throw it.
-                Bambu makes you cry about waste.
-                Two failure modes. One clear winner.
+                FDM Multicolor. Resin LCD.
+                Two categories. Raw signal only.
               </p>
-              <div className="mt-6 flex items-center justify-between">
-                <span className="font-mono text-xs text-black/60 uppercase tracking-wider">
+              <div className="mt-6 flex items-center gap-3">
+                <a
+                  href="https://fdm-multicolor.usersvoice.lemon.wang"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-black bg-black/10 hover:bg-black/20 px-3 py-1.5 rounded transition-colors"
+                >
+                  FDM →
+                </a>
+                <a
+                  href="https://resin-insight.usersvoice.lemon.wang"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-black bg-black/10 hover:bg-black/20 px-3 py-1.5 rounded transition-colors"
+                >
+                  Resin →
+                </a>
+                <span className="font-mono text-xs text-black/50 ml-auto uppercase tracking-wider">
                   User&apos;s Voice
                 </span>
-                <span className="flex items-center gap-1.5 text-sm text-black font-mono">
-                  <span className="group-hover:underline">Visit product</span>
-                  <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-                </span>
               </div>
-            </a>
+            </div>
 
             {/* ── NOW 1: Vibe Coding ── */}
             <div className="bento-now1 bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6

@@ -8,7 +8,7 @@ const workGroups = [
     items: [
       { label: 'iNew3D', href: 'https://inew3d.usersvoice.lemon.wang', disabled: false },
       { label: 'FDM Multicolor', href: 'https://fdm-multicolor.usersvoice.lemon.wang', disabled: false },
-      { label: 'Resin LCD', disabled: true, comingSoon: 'Coming Q3' },
+      { label: 'Resin LCD', href: 'https://resin-insight.usersvoice.lemon.wang', disabled: false },
     ],
   },
   {
