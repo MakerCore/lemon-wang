@@ -20,7 +20,7 @@ const workGroups: WorkGroup[] = [
     items: [
       { label: 'iNew3D', href: 'https://inew3d.usersvoice.lemon.wang', disabled: false },
       { label: 'FDM Multicolor', href: 'https://fdm-multicolor.usersvoice.lemon.wang', disabled: false },
-      { label: 'Resin LCD', href: 'https://resin-insight.usersvoice.lemon.wang', disabled: false },
+      { label: 'Resin Insight', href: 'https://resin-insight.usersvoice.lemon.wang', disabled: false },
     ],
   },
   {
