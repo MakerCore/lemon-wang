@@ -22,9 +22,14 @@ function getLatestPosts(dir: string, n = 5) {
         date: data.date as string,
         tags: Array.isArray(data.tags) ? data.tags as string[] : [],
         summary: data.summary as string,
+        hot: data.hot === true,
       }
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => {
+      if (a.hot && !b.hot) return -1
+      if (!a.hot && b.hot) return 1
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
     .slice(0, n)
 }
 
@@ -151,12 +156,11 @@ export default function Home() {
                                group cursor-pointer hover:border-[#CCFF00] transition-all"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      {i === 0 && (
+                      {post.hot ? (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">HOT</span>
+                      ) : i === 0 ? (
                         <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">NEW</span>
-                      )}
-                      {i === 1 && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono border border-[#CCFF00] text-[#CCFF00]">HOT</span>
-                      )}
+                      ) : null}
                       {post.tags[0] && (
                         <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
                           {post.tags[0]}
