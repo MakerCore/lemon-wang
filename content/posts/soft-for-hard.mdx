@@ -1,0 +1,91 @@
+---
+title: "Soft for Hard: Why I'd Spend More on Electronics to Save on Mechanics"
+date: "2026-04-03"
+tags: ["hardware", "fpga", "product-strategy", "manufacturing"]
+summary: "An FPGA costs more on the BOM. It costs less everywhere else."
+description: "Hardware teams systematically underprice mechanical cost. Software-defined components change the equation — and the architecture underneath "aggressive pricing" from Chinese manufacturers."
+slug: "soft-for-hard"
+canonical: "https://lemon.wang/posts/soft-for-hard"
+ogTitle: "Soft for Hard: Why I'd Spend More on Electronics to Save on Mechanics"
+ogDescription: "Hardware teams systematically underprice mechanical cost. Software-defined components change the equation — and the architecture underneath "aggressive pricing" from Chinese manufacturers."
+ogUrl: "https://lemon.wang/posts/soft-for-hard"
+ogType: "article"
+twitterCard: "summary_large_image"
+twitterTitle: "Soft for Hard: Why I'd Spend More on Electronics to Save on Mechanics"
+twitterDescription: "An FPGA costs more on the BOM. It costs less everywhere else."
+structuredData: |
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Soft for Hard: Why I'd Spend More on Electronics to Save on Mechanics",
+    "datePublished": "2026-04-03",
+    "author": {
+      "@type": "Person",
+      "name": "Lemon Wang",
+      "url": "https://lemon.wang"
+    },
+    "url": "https://lemon.wang/posts/soft-for-hard"
+  }
+---
+
+I once proposed replacing an MCU with an FPGA on a 3D printer control board.
+
+The BOM cost went up. Not by a little — the chip alone jumped from tens of dollars to hundreds. The engineering team looked at the spreadsheet and said no.
+
+I still think they were wrong.
+
+---
+
+## The trade-off nobody prices correctly
+
+When hardware teams evaluate components, they look at unit cost. An MCU at $30 versus an FPGA at $300 is a straightforward loss on the BOM line.
+
+What doesn't appear on that spreadsheet: mechanical calibration cost.
+
+A printer with a rigid, fixed control architecture needs its physical tolerances to be nearly perfect. Every micron of misalignment has to be corrected in steel, in assembly, in QA. That cost is real — it just lives in a different column. Manufacturing yield. Rework hours. Field return rate.
+
+An FPGA changes the equation. Programmable logic can absorb mechanical variance. What used to require a precision-machined component or a manual calibration step can become a firmware parameter. The machine corrects itself.
+
+You spent $270 more on a chip. You saved it back — and then some — in everything downstream.
+
+This is what I call **soft for hard**: using software-defined components to reduce mechanical cost, not add electronic cost.
+
+---
+
+## The lobster way
+
+I have a product philosophy I've carried across every hardware project I've worked on.
+
+If the device can check itself, that's one fewer QA step. If it can resolve its own error, that's one fewer field return. If a core component needs to be adjusted later — and it will — give it a brain now. Make it addressable. Make it controllable by code.
+
+Every "let the machine handle it" decision is a cost you don't pay twice.
+
+*The lobster way, before it was cool.*
+
+---
+
+## Why this matters for Chinese hardware
+
+There's a narrative about Chinese hardware I hear constantly from Western buyers: it's cheap because it cuts corners.
+
+Sometimes that's true. But the more interesting story — the one I've watched from the inside — is different.
+
+The manufacturers winning long-term figured out that electronics are cheap and mechanics are expensive. Not in unit cost terms. In system cost terms.
+
+Soft for hard is the logic underneath a lot of what looks, from the outside, like "aggressive pricing." It's not margin compression. It's architecture.
+
+When software absorbs mechanical tolerance, you unlock a cost structure that precision-machined Western hardware cannot match — because their architecture assumes the opposite. Fix it in steel. Then charge for the steel.
+
+---
+
+## The proposal that didn't go through
+
+My FPGA recommendation was rejected.
+
+The BOM increase was too visible. The downstream savings were too abstract. This is a common failure mode in hardware product decisions: the cost you can point to wins over the cost you have to model.
+
+I'm writing this because the logic is sound. And because I've seen enough hardware products struggle in the field to know what it costs to build the wrong architecture early.
+
+Soft for hard isn't a clever trick. It's a product philosophy.
+
+The lobster way doesn't run itself because you got lucky. It runs itself because you designed it to.
