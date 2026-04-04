@@ -158,7 +158,7 @@ export default function Home() {
                     <div className="flex items-center gap-2 mb-2">
                       {post.hot ? (
                         <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">HOT</span>
-                      ) : i === 0 ? (
+                      ) : (Date.now() - new Date(post.date).getTime()) / 86400000 <= 7 ? (
                         <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">NEW</span>
                       ) : null}
                       {post.tags[0] && (
