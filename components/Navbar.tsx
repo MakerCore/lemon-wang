@@ -74,14 +74,49 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-[var(--bg-primary)] border-b border-[var(--border)]">
-      <div className="max-w-5xl mx-auto px-4">
+      <div className="max-w-[1200px] mx-auto px-4">
         <div className="flex items-center justify-between h-14">
+
+          {/* Left: original logo */}
           <a href="/" className="flex items-center flex-shrink-0">
             <img src="/logo.png" alt="LEMON.WANG" className="h-10 w-auto" />
           </a>
 
-          {/* Desktop nav */}
+          {/* Desktop nav — order: 🍋LMT, LabNotes, Work, Tools */}
           <div className="hidden md:flex items-center gap-8">
+
+            {/* 🍋LMT with blinking green dot */}
+            <a href="/lmt" className="flex items-center gap-1.5 font-mono text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200">
+              🍋LMT
+              <span
+                className="w-[6px] h-[6px] rounded-full bg-[#22c55e] flex-shrink-0"
+                style={{ animation: 'blink-dot 1.8s ease-in-out infinite' }}
+              />
+            </a>
+
+            {/* LabNotes dropdown */}
+            <div className="relative" {...labnotesHandlers}>
+              <button className={`font-mono text-sm transition-colors duration-200 ${labnotesOpen ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'}`}>
+                LabNotes
+              </button>
+              {labnotesOpen && (
+                <div className="absolute top-full left-0 mt-1 w-44 bg-[#0a0a0a] border border-[var(--border)] rounded-lg py-2 shadow-xl" {...labnotesHandlers}>
+                  {labnotesLinks.map((item) => (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      className="block px-4 py-2.5 font-mono text-sm transition-colors duration-150"
+                      style={{ color: hoveredLabnote === item.label ? item.hoverColor : 'var(--text-secondary)' }}
+                      onMouseEnter={() => setHoveredLabnote(item.label)}
+                      onMouseLeave={() => setHoveredLabnote('')}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Work dropdown */}
             <div className="relative" {...workHandlers}>
               <button className={`font-mono text-sm transition-colors duration-200 flex items-center gap-1 relative ${workOpen ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'}`}>
@@ -132,36 +167,9 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* LabNotes dropdown */}
-            <div className="relative" {...labnotesHandlers}>
-              <button className={`font-mono text-sm transition-colors duration-200 ${labnotesOpen ? 'text-white' : 'text-[var(--text-muted)] hover:text-white'}`}>
-                LabNotes
-              </button>
-              {labnotesOpen && (
-                <div className="absolute top-full left-0 mt-1 w-44 bg-[#0a0a0a] border border-[var(--border)] rounded-lg py-2 shadow-xl" {...labnotesHandlers}>
-                  {labnotesLinks.map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      className="block px-4 py-2.5 font-mono text-sm transition-colors duration-150"
-                      style={{ color: hoveredLabnote === item.label ? item.hoverColor : 'var(--text-secondary)' }}
-                      onMouseEnter={() => setHoveredLabnote(item.label)}
-                      onMouseLeave={() => setHoveredLabnote('')}
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Newsletter */}
-            <a href="#newsletter" className="font-mono text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200">
-              Newsletter
-            </a>
           </div>
 
-          {/* Mobile hamburger — no border */}
+          {/* Mobile hamburger */}
           <button
             className="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -178,6 +186,27 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] px-4 py-4 space-y-4">
           <div>
+            <a href="/" className="flex items-center gap-1.5 py-2 font-mono text-sm text-[var(--text-secondary)] hover:text-white transition-colors">
+              🍋LMT
+              <span className="w-[6px] h-[6px] rounded-full bg-[#22c55e]" style={{ animation: 'blink-dot 1.8s ease-in-out infinite' }} />
+            </a>
+          </div>
+          <div className="border-t border-[var(--border)] pt-4">
+            <p className="font-mono text-[10px] tracking-[2px] uppercase text-[var(--text-muted)] mb-2">LABNOTES</p>
+            {labnotesLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="block py-2 font-mono text-sm transition-colors"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = item.hoverColor)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div className="border-t border-[var(--border)] pt-4">
             <p className="font-mono text-[10px] tracking-[2px] uppercase text-[var(--text-muted)] mb-2">WORK</p>
             {workGroups.map((group) => (
               <div key={group.title}>
@@ -197,26 +226,6 @@ export default function Navbar() {
                 {item.label}
               </a>
             ))}
-          </div>
-          <div className="border-t border-[var(--border)] pt-4">
-            <p className="font-mono text-[10px] tracking-[2px] uppercase text-[var(--text-muted)] mb-2">LABNOTES</p>
-            {labnotesLinks.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="block py-2 font-mono text-sm transition-colors"
-                style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = item.hoverColor)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-          <div className="border-t border-[var(--border)] pt-4">
-            <a href="#newsletter" className="block py-2 font-mono text-sm text-[var(--text-secondary)] hover:text-white transition-colors">
-              Newsletter
-            </a>
           </div>
         </div>
       )}
