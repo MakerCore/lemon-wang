@@ -1,5 +1,38 @@
 # lemon-wang — Claude 工作手册
 
+## 项目现状（每次新对话先读这里）
+
+**网站状态：已上线，正常运营**
+- 生产地址：`https://www.lemon.wang`
+- 最后确认上线：2026-05-28
+
+**已发布内容**
+- `content/posts/`（LabNotes 博客，英文）：
+  - chinese-hardware-different-logic
+  - inew3d-kickstarter-signal
+  - naming-gap（2026-05-24，Mind the Product 推荐）
+  - prusa-vs-bambu
+  - resin-workflow-tax
+  - soft-for-hard
+- `content/promax/`（ProMax 专栏）：entry-001 ~ entry-003，005-factory-floor，i-dont-wake-up-on-my-own
+- `content/lmt/`（Mission Tree 系列）：mdm-navigating-uncertainty
+
+**分发渠道现状**
+- 主站：✅ 运营中
+- X/Twitter：状态未知（文档规划中，实际是否在发待确认）
+- Substack：状态未知（文档规划有，实际是否建立待确认）
+- 公众号/爱发电：状态未知（文档规划有，待确认是否启动）
+- 主站 Newsletter 表单：有组件，接入邮件服务待确认
+
+**策略文档位置**（`docs/` 目录，不在代码里）
+- `docs/strategy/target-audience.md` — 目标用户画像 v2（Dragonfly/Solo Sour）
+- `docs/strategy/monetization.md` — 变现方案 v2（订阅优先）
+- `docs/strategy/benchmarking.md` — 竞品对标 v2
+- `docs/content/premiere-piece.md` — 首发稿草稿（内容已部分过期）
+- `docs/brand/` — VI 系统、MDM 方法论
+
+---
+
 ## 每次开始任务前必做
 1. `git pull` 拉取最新代码
 2. `git status` 确认工作区干净
