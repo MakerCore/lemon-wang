@@ -34,9 +34,24 @@ function getAllPosts() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data } = getPost(params.slug)
+  const url = `https://www.lemon.wang/promax/${params.slug}`
+  const description = data.description ?? data.summary ?? ''
   return {
     title: `${data.title} · ProMax's`,
-    description: data.description ?? data.summary ?? '',
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: data.title,
+      description,
+      url,
+      type: 'article',
+      publishedTime: data.date,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: data.title,
+      description,
+    },
   }
 }
 

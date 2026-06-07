@@ -40,9 +40,24 @@ export async function generateMetadata({
   params: { slug: string }
 }): Promise<Metadata> {
   const { data } = getPost(params.slug)
+  const url = `https://www.lemon.wang/lmt/${params.slug}`
+  const description = data.description ?? data.summary ?? ''
   return {
     title: `${data.title} | Lemon's Mission Tree`,
-    description: data.description ?? data.summary ?? '',
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: data.title,
+      description,
+      url,
+      type: 'article',
+      publishedTime: data.date,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: data.title,
+      description,
+    },
   }
 }
 

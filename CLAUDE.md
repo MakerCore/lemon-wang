@@ -4,17 +4,19 @@
 
 **网站状态：已上线，正常运营**
 - 生产地址：`https://www.lemon.wang`
-- 最后确认上线：2026-05-28
+- 最后确认上线：2026-06-07
 
 **已发布内容**
 - `content/posts/`（LabNotes 博客，英文）：
-  - chinese-hardware-different-logic
-  - inew3d-kickstarter-signal
+  - chinese-hardware-different-logic（2026-04-02）
+  - inew3d-kickstarter-signal（2026-04-03）
+  - soft-for-hard（2026-04-03）
   - naming-gap（2026-05-24，Mind the Product 推荐）
-  - prusa-vs-bambu
-  - resin-workflow-tax
-  - soft-for-hard
-- `content/promax/`（ProMax 专栏）：entry-001 ~ entry-003，005-factory-floor，i-dont-wake-up-on-my-own
+  - prusa-vs-bambu（2026-03-27）
+  - resin-workflow-tax（2026-03-31）
+  - ukge-full-color-real-users（2026-06-01）
+  - warlord-games-uk-factory-tour（2026-06-07）
+- `content/promax/`（ProMax 专栏）：entry-001 ~ entry-003，i-dont-wake-up-on-my-own，005-factory-floor，006-avoiding-decisions
 - `content/lmt/`（Mission Tree 系列）：mdm-navigating-uncertainty
 
 **分发渠道现状**
@@ -61,3 +63,5 @@
 - `.claude/` 目录不要提交
 - 图片改动要同时更新 `public/` 和对应 MDX 的引用路径
 - 新增 MDX 文章需要在 frontmatter 里加 `date`、`hot`（可选）字段
+- **SEO/OG/Twitter 由代码自动生成**，frontmatter 里不要写 `slug`、`canonical`、`og*`、`twitter*`、`structuredData`、`featured`——这些字段代码不读取，写了也没用
+- OG/Twitter/canonical 在各 `[slug]/page.tsx` 的 `generateMetadata` 里从 `title`、`description`/`summary`、`params.slug` 自动推导
