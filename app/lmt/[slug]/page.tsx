@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -141,7 +142,7 @@ export default function LMTPostPage({ params }: { params: { slug: string } }) {
         prose-ul:text-[#999] prose-li:text-[#999]
         [&_p:has(>em:only-child)]:mt-16 [&_p:has(>em:only-child)]:text-xs [&_p:has(>em:only-child)]:text-[#555] [&_p:has(>em:only-child)]:font-mono
       ">
-        <MDXRemote source={content} components={mdxComponents} />
+        <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
       </article>
 
       {/* Continue Reading */}

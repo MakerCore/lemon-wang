@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -209,7 +210,7 @@ export default function ProMaxPostPage({ params }: { params: { slug: string } })
             article ul { margin: 20px 0; padding-left: 24px; }
             article li { margin-bottom: 12px; font-size: 15px; line-height: 1.7; color: #e0e0e0; }
           `}</style>
-          <MDXRemote source={content} components={mdxComponents} />
+          <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
         </article>
 
         {/* Navigation */}

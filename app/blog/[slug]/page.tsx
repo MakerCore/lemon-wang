@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -112,7 +113,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         prose-code:text-[#CCFF00] prose-code:text-[13px] prose-code:bg-white/5 prose-code:px-1 prose-code:rounded
         [&_p:has(>em:only-child)]:mt-16 [&_p:has(>em:only-child)]:text-xs [&_p:has(>em:only-child)]:text-[#999] [&_p:has(>em:only-child)]:font-mono [&_p:has(>em:only-child)]:not-italic
       ">
-        <MDXRemote source={content} components={mdxComponents} />
+        <MDXRemote source={content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
       </article>
 
       {/* Continue Reading */}
