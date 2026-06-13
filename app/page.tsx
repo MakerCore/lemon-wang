@@ -69,15 +69,15 @@ export default function Home() {
                 <h1 className="font-sans text-4xl lg:text-[52px] font-bold leading-[1.05] tracking-tight text-[var(--text-primary)] mb-3">
                   LEMON<br />WANG
                 </h1>
+                <p className="text-[15px] text-white leading-relaxed mb-1">
+                  I build decision frameworks for uncertain territory — hardware, AI, deep tech.
+                </p>
                 <p className="text-[15px] text-white leading-relaxed mb-3">
-                  PM by day. Builder by night. Writer always.
+                  First-hand signal. Sour truth. No padding.
                 </p>
                 <div className="mt-auto">
-                  <p className="font-mono text-xs tracking-widest text-[var(--highlight)] uppercase">
-                    SOLO.&nbsp;&nbsp;SOUR.&nbsp;&nbsp;SOVEREIGN.
-                  </p>
-                  <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed mt-2">
-                    I build decision frameworks for uncertain territory — hardware, AI, deep tech. First-hand signal, sour truth, no padding.
+                  <p className="font-mono text-xs tracking-widest [word-spacing:0.6em] whitespace-nowrap text-[var(--highlight)] uppercase">
+                    SOLO. SOUR. SOVEREIGN.
                   </p>
                   <a
                     href="/about"
