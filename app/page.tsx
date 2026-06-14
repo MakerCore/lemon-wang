@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import ReactDOM from 'react-dom'
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import NewsletterForm from '@/components/NewsletterForm';
@@ -39,6 +40,10 @@ export default function Home() {
   const lemonPosts = getLatestPosts('content/posts')
   const promaxPosts = getLatestPosts('content/promax')
 
+  // Preload the hero portrait (LCP element) — it's a CSS background, so the
+  // browser would otherwise discover it late, after CSS parse.
+  ReactDOM.preload('/lemon-portrait.webp', { as: 'image' })
+
   return (
     <>
       <main className="pt-14">
@@ -53,7 +58,7 @@ export default function Home() {
                 className="absolute inset-y-0 right-0 w-[45%] pointer-events-none select-none"
                 style={{
                   backgroundColor: '#141414',
-                  backgroundImage: 'url(/lemon-portrait.png)',
+                  backgroundImage: 'url(/lemon-portrait.webp)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center 8%',
                   backgroundRepeat: 'no-repeat',
