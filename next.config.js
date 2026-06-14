@@ -2,5 +2,10 @@
 const nextConfig = {
   images: { unoptimized: true },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  experimental: {
+    outputFileTracingExcludes: {
+      '*': ['.git/**/*']
+    }
+  }
 }
 module.exports = nextConfig
