@@ -1,8 +1,23 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { Inter, Space_Mono } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import JsonLd from '@/components/JsonLd'
 import './globals.css'
+
+// Self-hosted via next/font — no render-blocking request to fonts.googleapis.com
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-space-mono',
+  display: 'swap',
+})
 
 // Replace G-XXXXXXXXXX with your GA4 Measurement ID
 const GA_ID = 'G-4FTC43XTXD'
@@ -42,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${spaceMono.variable}`}>
       <head>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>" />
       </head>
