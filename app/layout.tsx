@@ -9,7 +9,7 @@ const GA_ID = 'G-4FTC43XTXD'
 
 const SITE_URL = 'https://www.lemon.wang'
 const DESCRIPTION =
-  'First-hand signal from inside Chinese hardware — decision frameworks for founders, operators, and investors. Sour truth, no padding.'
+  'First-hand signal from inside Chinese hardware. Decision frameworks for founders and investors — sour truth, no padding.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
