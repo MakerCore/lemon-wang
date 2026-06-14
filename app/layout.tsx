@@ -6,9 +6,33 @@ import './globals.css'
 // Replace G-XXXXXXXXXX with your GA4 Measurement ID
 const GA_ID = 'G-4FTC43XTXD'
 
+const SITE_URL = 'https://www.lemon.wang'
+const DESCRIPTION =
+  'First-hand signal from inside Chinese hardware. Decision frameworks for founders, operators, and investors in hardware, AI, and deep tech — sour truth, no padding.'
+
 export const metadata: Metadata = {
-  title: 'lemon.wang',
-  description: 'PM by day. Builder by night. Writer always.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Lemon Wang | Inside Chinese Hardware',
+    template: '%s | Lemon Wang',
+  },
+  description: DESCRIPTION,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Lemon Wang',
+    url: SITE_URL,
+    title: 'Lemon Wang | Inside Chinese Hardware',
+    description: DESCRIPTION,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lemon Wang | Inside Chinese Hardware',
+    description: DESCRIPTION,
+  },
 }
 
 export default function RootLayout({
