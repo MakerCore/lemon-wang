@@ -5,6 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import JsonLd from '@/components/JsonLd'
 
 const postsDir = path.join(process.cwd(), 'content/posts')
 
@@ -73,8 +74,24 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const tags: string[] = Array.isArray(data.tags) ? data.tags : (data.tag ? [data.tag] : [])
   const otherPosts = getOtherPosts(params.slug)
 
+  const description = data.description ?? data.summary ?? ''
+
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-16 max-w-3xl mx-auto">
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: data.title,
+          description,
+          datePublished: data.date,
+          dateModified: data.date,
+          mainEntityOfPage: `https://www.lemon.wang/blog/${params.slug}`,
+          author: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+          publisher: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+          keywords: tags.join(', '),
+        }}
+      />
       <a
         href="/blog"
         className="text-[#999] font-mono text-xs hover:text-[#CCFF00] transition-colors mb-12 block"

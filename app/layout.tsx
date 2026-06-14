@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import Navbar from '@/components/Navbar'
+import JsonLd from '@/components/JsonLd'
 import './globals.css'
 
 // Replace G-XXXXXXXXXX with your GA4 Measurement ID
@@ -46,6 +47,29 @@ export default function RootLayout({
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>" />
       </head>
       <body>
+        <JsonLd
+          data={{
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'WebSite',
+                '@id': `${SITE_URL}/#website`,
+                url: SITE_URL,
+                name: 'Lemon Wang',
+                description: DESCRIPTION,
+                publisher: { '@id': `${SITE_URL}/#person` },
+              },
+              {
+                '@type': 'Person',
+                '@id': `${SITE_URL}/#person`,
+                name: 'Lemon Wang',
+                url: SITE_URL,
+                jobTitle: 'Product Manager',
+                description: DESCRIPTION,
+              },
+            ],
+          }}
+        />
         <Navbar />
         {children}
         <Script
