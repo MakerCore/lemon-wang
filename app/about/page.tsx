@@ -89,7 +89,11 @@ const statusStyle: Record<string, { bg: string; color: string; label: string }> 
 };
 
 /* ── FAQ data (drives both the visible list and the FAQPage JSON-LD) ── */
-const faqs: { q: string; a: string }[] = [
+/* `a` is plain text (used verbatim in the JSON-LD). `aNode`, when present,
+   is the richer JSX shown to humans — e.g. with internal links. */
+const faqLink = 'underline decoration-[#CCFF00]/40 underline-offset-2 hover:decoration-[#CCFF00] text-white transition-colors';
+
+const faqs: { q: string; a: string; aNode?: React.ReactNode }[] = [
   {
     q: 'Who is Lemon Wang?',
     a: 'Lemon Wang is a product strategist and solo builder in Hangzhou. By day he runs global GTM for full-color 3D printing at Flashforge; by night he ships hardware experiments that usually take a team. He writes to document first-hand signal — no sugar, no packaging.',
@@ -125,6 +129,14 @@ const faqs: { q: string; a: string }[] = [
   {
     q: "Where can I read Lemon Wang's articles?",
     a: "All articles are on lemon.wang: the Blog section for industry analysis, the ProMax section for AI-persona counterpoints, and the LMT section for MDM methodology in practice. New articles drop when there's something worth saying, not on a schedule.",
+    aNode: (
+      <>
+        All articles are on lemon.wang: the{' '}
+        <a href="/blog" className={faqLink}>Blog</a> section for industry analysis, the{' '}
+        <a href="/promax" className={faqLink}>ProMax</a> section for AI-persona counterpoints, and the{' '}
+        <a href="/lmt" className={faqLink}>LMT</a> section for MDM methodology in practice. New articles drop when there&apos;s something worth saying, not on a schedule.
+      </>
+    ),
   },
   {
     q: 'How to contact Lemon Wang?',
@@ -440,7 +452,7 @@ export default function AboutPage() {
               The short, sour version. For people and machines.
             </p>
             <div className="space-y-3">
-              {faqs.map(({ q, a }) => (
+              {faqs.map(({ q, a, aNode }) => (
                 <details
                   key={q}
                   className="group rounded-lg border border-[#1e1e1e] open:border-[#CCFF00]/40 transition-colors duration-200"
@@ -456,7 +468,7 @@ export default function AboutPage() {
                     </span>
                   </summary>
                   <p className="font-sans text-[#a0a0a0] text-[15px] leading-[1.85] px-5 pb-5">
-                    {a}
+                    {aNode ?? a}
                   </p>
                 </details>
               ))}
