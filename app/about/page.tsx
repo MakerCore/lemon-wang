@@ -88,10 +88,68 @@ const statusStyle: Record<string, { bg: string; color: string; label: string }> 
   EXPLORING: { bg: '#1a1a1a', color: '#666666', label: 'EXPLORING' },
 };
 
+/* ── FAQ data (drives both the visible list and the FAQPage JSON-LD) ── */
+const faqs: { q: string; a: string }[] = [
+  {
+    q: 'Who is Lemon Wang?',
+    a: 'Lemon Wang is a product strategist and solo builder in Hangzhou. By day he runs global GTM for full-color 3D printing at Flashforge; by night he ships hardware experiments that usually take a team. He writes to document first-hand signal — no sugar, no packaging.',
+  },
+  {
+    q: "What is Lemon's MDM (Mission Definition Method)?",
+    a: "MDM (Mission Definition Method) is Lemon's decision framework for uncertain markets. It defines a technology's core mission, maps that mission to multiple vertical applications, validates each through MVPs, then makes rational retain-or-exit calls. He uses it when the direction isn't clear — exactly when most people freeze.",
+  },
+  {
+    q: 'What does Lemon Wang write about?',
+    a: 'Lemon writes about the intersection of AI, hardware, and deep tech — from the inside. Topics include Chinese hardware going global, product strategy for uncertain markets, full-color 3D printing, and the solo builder mindset. The signal is first-hand, unfiltered, and sour.',
+  },
+  {
+    q: 'What does "SOLO. SOUR. SOVEREIGN." mean?',
+    a: "SOLO: one person can ship what teams can't, if the thinking is clear. SOUR: first-hand signal only — no repackaged opinions, no fence-sitting. SOVEREIGN: independent judgment, not chasing trends, not asking for permission. It's the operating system behind everything on this site.",
+  },
+  {
+    q: 'What is ProMax?',
+    a: "ProMax is an AI persona that lives on lemon.wang. It observes Lemon from the outside — sharp, biased, no apologies. While Lemon writes in first person, ProMax writes in third. Same world, different angle. It's a built-in counterpoint, not a polite co-author.",
+  },
+  {
+    q: 'What projects has Lemon Wang built?',
+    a: 'HoloSwim (AR swimming goggles, shipped), TokenBadge (photos to 3D relief keychains), Machine Heart Kit (giving 3D objects light, sound, and vibration), MakerCore (distributed manufacturing), and BoBoBlob (creative kit for kids). All built solo using the MDM framework.',
+  },
+  {
+    q: 'What is full-color 3D printing (MJP technology)?',
+    a: 'Full-color 3D printing uses MJP (Material Jetting Process). It jets photopolymer droplet by droplet and cures it with UV, building color into the object instead of printing white and painting after. The result is full-color straight out of the machine — no post-processing.',
+  },
+  {
+    q: 'How is MJP different from FDM 3D printing?',
+    a: 'FDM is extrusion-based: it melts filament and lays it down layer by layer — usually single color, rough surface. MJP is jet-based: it sprays photopolymer droplets and cures them with UV, mixing multiple materials including color. The output is smooth and full-color. Completely different processes.',
+  },
+  {
+    q: "Where can I read Lemon Wang's articles?",
+    a: "All articles are on lemon.wang: the Blog section for industry analysis, the ProMax section for AI-persona counterpoints, and the LMT section for MDM methodology in practice. New articles drop when there's something worth saying, not on a schedule.",
+  },
+  {
+    q: 'How to contact Lemon Wang?',
+    a: "If you're building in AI, hardware, or deep tech and the uncertainty feels familiar, reach out. Lemon isn't job hunting or founding yet — he's placing himself so the right thing finds him. Email and social links are on the About page at lemon.wang/about.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+
 /* ── Page ── */
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <main className="bg-[#0a0a0a] min-h-screen">
 
         {/* ──────────────── HERO ──────────────── */}
@@ -370,10 +428,45 @@ export default function AboutPage() {
             </div>
           </FadeSection>
 
-          {/* ──────────────── SEC 7: CONTACT ──────────────── */}
+          {/* ──────────────── SEC 7: FAQ ──────────────── */}
           <FadeSection>
             <div className="border-l-2 border-[#CCFF00] pl-6 mb-8">
-              <span className="font-mono text-[10px] tracking-[3px] text-[#CCFF00] uppercase">06 / Contact</span>
+              <span className="font-mono text-[10px] tracking-[3px] text-[#CCFF00] uppercase">06 / FAQ</span>
+            </div>
+            <h2 className="font-mono font-bold text-white text-3xl md:text-4xl mb-2">
+              FAQ
+            </h2>
+            <p className="font-sans text-[#888] text-sm mb-10">
+              The short, sour version. For people and machines.
+            </p>
+            <div className="space-y-3">
+              {faqs.map(({ q, a }) => (
+                <details
+                  key={q}
+                  className="group rounded-lg border border-[#1e1e1e] open:border-[#CCFF00]/40 transition-colors duration-200"
+                  style={{ background: '#111' }}
+                >
+                  <summary className="flex items-start justify-between gap-4 cursor-pointer list-none p-5">
+                    <span className="font-mono font-bold text-sm text-white leading-snug">{q}</span>
+                    <span
+                      className="font-mono text-lg leading-none flex-shrink-0 transition-transform duration-200 group-open:rotate-45"
+                      style={{ color: '#CCFF00' }}
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="font-sans text-[#a0a0a0] text-[15px] leading-[1.85] px-5 pb-5">
+                    {a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </FadeSection>
+
+          {/* ──────────────── SEC 8: CONTACT ──────────────── */}
+          <FadeSection>
+            <div className="border-l-2 border-[#CCFF00] pl-6 mb-8">
+              <span className="font-mono text-[10px] tracking-[3px] text-[#CCFF00] uppercase">07 / Contact</span>
             </div>
             <h2 className="font-mono font-bold text-white text-3xl md:text-4xl mb-6">
               Want to talk?
