@@ -2,6 +2,14 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description:
+    'First-hand signal from inside Chinese hardware — industry analysis, product strategy for uncertain markets, and full-color 3D printing. Sour truth, no padding.',
+  alternates: { canonical: '/blog' },
+}
 
 function getPosts() {
   const postsDir = path.join(process.cwd(), 'content/posts')

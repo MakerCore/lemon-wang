@@ -5,9 +5,10 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: "Lemon's Mission Tree | lemon.wang",
+  title: "Lemon's Mission Tree",
   description:
     "A public record of decision-making under uncertainty. Each piece follows Lemon's MDM — from core technology to verticals, validation, and exit.",
+  alternates: { canonical: '/lmt' },
 }
 
 function getLMTPosts() {

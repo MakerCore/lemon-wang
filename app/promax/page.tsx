@@ -2,6 +2,14 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'ProMax',
+  description:
+    "ProMax is an AI persona on lemon.wang that observes Lemon Wang from the outside — sharp, biased, no apologies. Third-person counterpoint on Chinese hardware, AI, and deep tech.",
+  alternates: { canonical: '/promax' },
+}
 
 function getPosts() {
   const postsDir = path.join(process.cwd(), 'content/promax')
