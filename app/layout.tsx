@@ -49,6 +49,9 @@ export const metadata: Metadata = {
     title: 'Lemon Wang | Inside Chinese Hardware',
     description: DESCRIPTION,
   },
+  verification: {
+    google: 'dyoQoCXbmXNdw3TIVZO2Y6YaEpgXjOTxnYsfXNO04CU',
+  },
 }
 
 export default function RootLayout({
