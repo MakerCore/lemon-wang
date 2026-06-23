@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#0F0F0F"/>
+  <g transform="rotate(-25 32 33)">
+    <!-- lemon body -->
+    <ellipse cx="32" cy="33" rx="21" ry="14" fill="#F6D23C"/>
+    <!-- tip nubs along the long axis -->
+    <circle cx="10.5" cy="33" r="3.1" fill="#E7BE2A"/>
+    <circle cx="53.5" cy="33" r="3.1" fill="#E7BE2A"/>
+    <!-- highlight -->
+    <ellipse cx="27" cy="28" rx="10" ry="5" fill="#FBE583" opacity="0.85"/>
+  </g>
+  <!-- leaf -->
+  <path d="M41 16 C47 12 53 13 54 13 C53 18 50 23 43 23 C41 21 40 18 41 16 Z" fill="#9CCC3C"/>
+  <path d="M44 17 C47 17 50 16 52 15" stroke="#6F9E27" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+</svg>
