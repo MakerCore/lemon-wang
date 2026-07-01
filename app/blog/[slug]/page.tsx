@@ -35,6 +35,35 @@ function getOtherPosts(currentSlug: string) {
     .slice(0, 2)
 }
 
+function plainText(markdown: string) {
+  return markdown
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[*_`>#]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function getFieldFaq(content: string) {
+  const faqStart = content.indexOf('## Field FAQ')
+  if (faqStart === -1) return []
+
+  const faqSection = content
+    .slice(faqStart + '## Field FAQ'.length)
+    .split(/\n##\s+/)[0]
+
+  const faqs: { question: string; answer: string }[] = []
+  const questionPattern = /\*\*(.+?)\*\*\s*\n([\s\S]*?)(?=\n\*\*|$)/g
+  let match: RegExpExecArray | null
+
+  while ((match = questionPattern.exec(faqSection)) !== null) {
+    const question = plainText(match[1])
+    const answer = plainText(match[2])
+    if (question && answer) faqs.push({ question, answer })
+  }
+
+  return faqs
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data } = getPost(params.slug)
   const url = `https://www.lemon.wang/blog/${params.slug}`
@@ -75,21 +104,38 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const otherPosts = getOtherPosts(params.slug)
 
   const description = data.description ?? data.summary ?? ''
+  const faqs = getFieldFaq(content)
+  const articleSchema = {
+    '@type': 'BlogPosting',
+    headline: data.title,
+    description,
+    datePublished: data.date,
+    dateModified: data.date,
+    mainEntityOfPage: `https://www.lemon.wang/blog/${params.slug}`,
+    author: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+    publisher: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+    keywords: tags.join(', '),
+  }
+  const faqSchema = faqs.length
+    ? {
+        '@type': 'FAQPage',
+        mainEntity: faqs.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: answer,
+          },
+        })),
+      }
+    : null
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-16 max-w-3xl mx-auto">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          headline: data.title,
-          description,
-          datePublished: data.date,
-          dateModified: data.date,
-          mainEntityOfPage: `https://www.lemon.wang/blog/${params.slug}`,
-          author: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
-          publisher: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
-          keywords: tags.join(', '),
+          '@graph': faqSchema ? [articleSchema, faqSchema] : [articleSchema],
         }}
       />
       <a

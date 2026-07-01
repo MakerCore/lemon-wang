@@ -5,6 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import JsonLd from '@/components/JsonLd'
 
 const postsDir = path.join(process.cwd(), 'content/promax')
 
@@ -148,9 +149,29 @@ export default function ProMaxPostPage({ params }: { params: { slug: string } })
   const currentIndex = allPosts.findIndex(p => p.slug === params.slug)
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
+  const description = data.description ?? data.summary ?? ''
 
   return (
     <main style={{ backgroundColor: '#0a0a0a', minHeight: '100vh' }}>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: data.title,
+          description,
+          datePublished: data.date,
+          dateModified: data.date,
+          mainEntityOfPage: `https://www.lemon.wang/promax/${params.slug}`,
+          author: { '@type': 'Person', name: 'ProMax', url: 'https://www.lemon.wang/promax' },
+          publisher: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+          keywords: tags.join(', '),
+          isPartOf: {
+            '@type': 'Blog',
+            name: "ProMax's",
+            url: 'https://www.lemon.wang/promax',
+          },
+        }}
+      />
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '40px 24px' }}>
 
         {/* Header */}

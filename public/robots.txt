@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://www.lemon.wang/sitemap.xml
+Sitemap: https://www.lemon.wang/sitemap-static.xml

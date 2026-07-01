@@ -5,6 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import JsonLd from '@/components/JsonLd'
 
 const lmtDir = path.join(process.cwd(), 'content/lmt')
 
@@ -88,9 +89,30 @@ export default function LMTPostPage({ params }: { params: { slug: string } }) {
   const { data, content } = getPost(params.slug)
   const tags: string[] = Array.isArray(data.tags) ? data.tags : []
   const otherPosts = getOtherPosts(params.slug)
+  const description = data.description ?? data.summary ?? ''
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-16 max-w-3xl mx-auto">
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: data.title,
+          description,
+          datePublished: data.date,
+          dateModified: data.date,
+          mainEntityOfPage: `https://www.lemon.wang/lmt/${params.slug}`,
+          author: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+          publisher: { '@type': 'Person', name: 'Lemon Wang', url: 'https://www.lemon.wang' },
+          keywords: tags.join(', '),
+          isPartOf: {
+            '@type': 'Blog',
+            name: "Lemon's Mission Tree",
+            url: 'https://www.lemon.wang/lmt',
+          },
+          about: data.category,
+        }}
+      />
       {/* Back */}
       <Link
         href="/lmt"
