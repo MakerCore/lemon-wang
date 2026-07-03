@@ -68,8 +68,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const { data } = getPost(params.slug)
   const url = `https://www.lemon.wang/blog/${params.slug}`
   const description = data.description ?? data.summary ?? ''
+  const seoTitle = data.seoTitle ?? data.title
   return {
-    title: data.title,
+    title: seoTitle,
     description,
     alternates: { canonical: url },
     openGraph: {
