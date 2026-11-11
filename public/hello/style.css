@@ -16,3 +16,5 @@
 
 /* Main-site entry points for visitors arriving through the introduction. */
 .nav-link{display:inline-flex;align-items:center;gap:8px;min-height:44px}.site-guide{margin-top:30px;padding:28px 0 4px;border-top:1px solid var(--rule)}.site-guide h2{font-size:30px;margin-bottom:12px}.site-guide p{color:var(--muted);font-size:15px;max-width:520px;margin-bottom:12px}.site-guide .text-link{min-height:44px}
+
+.current .product-name{font-weight:400;line-height:1.4;margin-bottom:20px}.featured-technology{font-size:16px;line-height:1.5;font-weight:600;margin:28px 0 12px}
