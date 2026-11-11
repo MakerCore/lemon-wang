@@ -13,3 +13,6 @@
 @media(max-width:350px){.hero-title h1{font-size:42px}.portrait{width:80px}.portrait img{height:100px}.sample figcaption{flex-wrap:wrap}}
 
 .real-samples .parrot>a>img{aspect-ratio:3/4;object-position:50% 50%}.real-samples .transparency>a>img{object-position:50% 55%}.transparent-pair{margin-top:10px}.transparent-pair img{aspect-ratio:3/4;object-position:50% 50%}
+
+/* Main-site entry points for visitors arriving through the introduction. */
+.nav-link{display:inline-flex;align-items:center;gap:8px;min-height:44px}.site-guide{margin-top:30px;padding:28px 0 4px;border-top:1px solid var(--rule)}.site-guide h2{font-size:30px;margin-bottom:12px}.site-guide p{color:var(--muted);font-size:15px;max-width:520px;margin-bottom:12px}.site-guide .text-link{min-height:44px}
