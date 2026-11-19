@@ -9,29 +9,36 @@ export const SPECTRUM = ['#FF7A6B', '#FFC94D', '#7BE495', '#4FD1F0', '#8FA8FF', 
 const cssGradient = `linear-gradient(90deg, ${SPECTRUM.join(', ')})`
 
 /**
- * Stacked lock-up: an airy full-spectrum FULL-COLOR over a white TIMES,
- * both exactly the same width. Letters are translucent over a soft glow
- * of the same gradient, so the colour feels like light, not paint.
+ * Stacked lock-up (E1): glass FULL-COLOR over a white TIMES, both exactly the
+ * same width. Glass = translucent spectrum fill + top specular highlight +
+ * soft bottom reflection + a thin bright edge — no blur glow.
  */
 function StackedWordmark({ className }: { className: string }) {
   const W = 520
-  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900 }
+  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900, fontSize: 76 }
+  const crown = { x: 0, y: 66, textLength: W, lengthAdjust: 'spacingAndGlyphs' as const, style: font }
   return (
     <svg viewBox={`0 0 ${W} 214`} className={className} role="img" aria-label="Full-Color Times">
       <defs>
         <linearGradient id="fct-spectrum" x1="0" x2="1" y1="0" y2="0">
           {SPECTRUM.map((c, i) => <stop key={c} offset={i / (SPECTRUM.length - 1)} stopColor={c} />)}
         </linearGradient>
-        <filter id="fct-glow" x="-10%" y="-40%" width="120%" height="180%">
-          <feGaussianBlur stdDeviation="9" />
-        </filter>
+        <linearGradient id="fct-hi" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.75" />
+          <stop offset="0.42" stopColor="#fff" stopOpacity="0.12" />
+          <stop offset="0.5" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="fct-lo" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0.7" stopColor="#fff" stopOpacity="0" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0.28" />
+        </linearGradient>
       </defs>
-      {/* glow */}
-      <text x="0" y="66" textLength={W} lengthAdjust="spacingAndGlyphs" fill="url(#fct-spectrum)" opacity="0.55" filter="url(#fct-glow)" style={{ ...font, fontSize: 76 }}>FULL-COLOR</text>
-      {/* translucent letters */}
-      <text x="0" y="66" textLength={W} lengthAdjust="spacingAndGlyphs" fill="url(#fct-spectrum)" fillOpacity="0.88" style={{ ...font, fontSize: 76 }}>FULL-COLOR</text>
-      {/* rule: same spectrum, fading at both ends */}
-      <rect x="0" y="82" width={W} height="5" rx="2.5" fill="url(#fct-spectrum)" opacity="0.8" />
+      <text {...crown} fill="url(#fct-spectrum)" fillOpacity="0.55">FULL-COLOR</text>
+      <text {...crown} fill="url(#fct-hi)">FULL-COLOR</text>
+      <text {...crown} fill="url(#fct-lo)">FULL-COLOR</text>
+      <text {...crown} fill="none" stroke="#ffffff" strokeOpacity="0.75" strokeWidth="1.1">FULL-COLOR</text>
+      <rect x="0" y="82" width={W} height="5" rx="2.5" fill="url(#fct-spectrum)" opacity="0.55" />
+      <rect x="0" y="82" width={W} height="2" rx="1" fill="#ffffff" opacity="0.5" />
       <text x="0" y="208" textLength={W} lengthAdjust="spacingAndGlyphs" fill="#ffffff" style={{ ...font, fontSize: 146 }}>TIMES</text>
     </svg>
   )
