@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
 import NewsletterForm from '@/components/NewsletterForm'
+import ShelfIcon from '@/components/ShelfIcon'
 import { MOCK_PRODUCTS } from '@/lib/mock-data'
 import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
 
@@ -115,9 +116,10 @@ export default function Home() {
                     key={s.code}
                     href={s.status === 'open' ? `/library/${s.slug}` : '#shelves'}
                     title={s.name}
-                    className="flex-1 min-w-0 rounded-t-[3px] flex items-center justify-center hover:-translate-y-1.5 transition-transform"
-                    style={{ background: s.color, height: `${[100, 92, 84, 96, 88, 100, 90, 82, 96, 88, 94, 86, 98, 90][i % 14]}%` }}
+                    className="flex-1 min-w-0 rounded-t-[3px] flex flex-col items-center justify-start gap-1.5 pt-1.5 hover:-translate-y-1.5 transition-transform"
+                    style={{ background: s.color, height: `${[100, 92, 98, 88, 96, 86, 94, 90, 84, 92, 98, 88, 96, 90][i % 14]}%` }}
                   >
+                    <ShelfIcon code={s.code} className="w-3.5 h-3.5 text-black/80 shrink-0" strokeWidth={2} />
                     <span className="font-mono text-[10px] font-bold text-black whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
                       {s.spine ?? s.name}
                     </span>
@@ -184,11 +186,14 @@ export default function Home() {
                 const open = s.status === 'open'
                 const inner = (
                   <>
-                    <div className="h-28 p-4 flex items-end justify-between" style={{ background: s.color }}>
-                      <span className="font-mono text-sm font-bold text-black">{s.code}</span>
-                      <span className="font-mono text-[10px] text-black bg-white/60 px-2 py-0.5 rounded-full">
+                    <div className="h-28 p-4 flex flex-col justify-between" style={{ background: s.color }}>
+                      <span className="self-end font-mono text-[10px] text-black bg-white/60 px-2 py-0.5 rounded-full">
                         {open ? 'Open' : PENDING}
                       </span>
+                      <div className="flex items-end justify-between">
+                        <span className="font-mono text-sm font-bold text-black">{s.code}</span>
+                        <ShelfIcon code={s.code} className="w-11 h-11 text-black/80" />
+                      </div>
                     </div>
                     <div className="p-5 flex flex-col gap-2 flex-1">
                       {s.group && <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{s.group}</span>}
@@ -230,7 +235,10 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 {CAPABILITIES.map(c => (
                   <div key={c.code} className="bg-[#fafaf6] border border-[#cfcec6] rounded-[var(--radius-lg)] p-4 flex flex-col gap-2">
-                    <span className="font-mono text-[11px] font-bold text-[#55554e]">{c.code}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] font-bold text-[#55554e]">{c.code}</span>
+                      <ShelfIcon code={c.code} className="w-6 h-6 text-[#33332e]" />
+                    </div>
                     <h3 className="font-sans text-base font-bold">{c.name}</h3>
                     <p className="text-[13px] text-[#55554e] leading-relaxed">{c.note ?? PENDING}</p>
                     {c.usedBy && <p className="font-mono text-[10px] text-[#55554e] mt-auto pt-1">Used by {c.usedBy.join(' · ')}</p>}
