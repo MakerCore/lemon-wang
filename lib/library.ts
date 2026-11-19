@@ -53,36 +53,48 @@ export const SHELVES: Shelf[] = [
     posts: [], seeAlso: ['F2.1'],
   },
   {
-    code: 'A3', slug: 'personalized-gifts', name: 'Personalized Gifts', color: '#FFD23F',
+    code: 'A3', slug: 'figures-designer-toys', name: 'Figures & Designer Toys', color: '#2EC4B6',
     status: 'collecting', posts: [],
   },
   {
-    code: 'A3.1', slug: 'keepsake-miniatures', name: 'Keepsake Miniatures', group: 'Personalized Gifts',
+    code: 'A4', slug: 'personalized-gifts', name: 'Personalized Gifts', color: '#FFD23F',
+    status: 'collecting', posts: [],
+  },
+  {
+    code: 'A4.1', slug: 'keepsake-miniatures', name: 'Keepsake Miniatures', group: 'Personalized Gifts',
     color: '#F2B705', status: 'collecting',
     hook: 'A real place, kept to remember a moment: the factory you just opened, the home you just moved into.',
     posts: [], seeAlso: ['A2'],
   },
   {
-    code: 'A4', slug: 'pets', name: 'Pets', color: '#FF9A4D', status: 'collecting', posts: [],
+    code: 'A4.2', slug: 'travel-souvenirs', name: 'Travel Souvenirs', group: 'Personalized Gifts',
+    color: '#FFE27A', status: 'collecting', posts: [],
   },
   {
-    code: 'A5', slug: 'education', name: 'Education', color: '#5BE38A', status: 'collecting', posts: [],
+    code: 'A5', slug: 'pets', name: 'Pets', color: '#FF9A4D', status: 'collecting', posts: [],
   },
   {
-    code: 'A6', slug: 'stop-motion', name: 'Stop-Motion', color: '#B69CFF', status: 'collecting', posts: [],
+    code: 'A6', slug: 'education', name: 'Education', color: '#5BE38A', status: 'collecting', posts: [],
   },
   {
-    code: 'A7', slug: 'accessories', name: 'Accessories', color: '#FFA6D5', status: 'collecting', posts: [],
+    code: 'A7', slug: 'stop-motion', name: 'Stop-Motion', color: '#B69CFF', status: 'collecting', posts: [],
   },
   {
-    code: 'A8', slug: 'digital-jewelry', name: 'Digital Jewelry', color: '#FF4FA3', status: 'collecting',
+    code: 'A8', slug: 'accessories', name: 'Accessories', color: '#FFA6D5', status: 'collecting', posts: [],
+  },
+  {
+    code: 'A9', slug: 'industrial-color-replacement', name: 'Industrial Color Replacement', color: '#C8C8C0',
+    status: 'collecting', posts: [],
+  },
+  {
+    code: 'A10', slug: 'digital-jewelry', name: 'Digital Jewelry', color: '#FF4FA3', status: 'collecting',
     hook: 'Finished jewelry set with printed gems.',
     posts: [], seeAlso: ['F1'],
   },
 ]
 
 export const CAPABILITIES: Capability[] = [
-  { code: 'F1', name: 'Digital Materials', note: 'Tortoiseshell, shell, gemstone — resin jade with identical veining, piece after piece.', usedBy: ['A8'] },
+  { code: 'F1', name: 'Digital Materials', note: 'Tortoiseshell, shell, gemstone — resin jade with identical veining, piece after piece.', usedBy: ['A10'] },
   { code: 'F2.1', name: 'Transparency', note: 'Color you can see light through — stained-glass panels and more.', usedBy: ['A2.3'] },
   { code: 'F2.2', name: 'Light Inside (Tyndall)', note: 'Voxel color that scatters light within the part: depth and glow, not just see-through.' },
   { code: 'F3', name: 'Soft & Soft-Hard', note: 'Ultra-flexible, or soft and rigid in one print — the cream on a miniature parfait.', usedBy: ['A2.2'] },
