@@ -9,14 +9,14 @@ export const SPECTRUM = ['#FF7A6B', '#FFC94D', '#7BE495', '#4FD1F0', '#8FA8FF', 
 const cssGradient = `linear-gradient(90deg, ${SPECTRUM.join(', ')})`
 
 /**
- * Stacked lock-up (E1): glass FULL-COLOR over a white TIMES, both exactly the
+ * Stacked lock-up (E3): white FULL-COLOR over a glass TIMES, both exactly the
  * same width. Glass = translucent spectrum fill + top specular highlight +
- * soft bottom reflection + a thin bright edge — no blur glow.
+ * soft bottom reflection + a thin bright edge.
  */
 function StackedWordmark({ className }: { className: string }) {
   const W = 520
-  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900, fontSize: 76 }
-  const crown = { x: 0, y: 66, textLength: W, lengthAdjust: 'spacingAndGlyphs' as const, style: font }
+  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900 }
+  const times = { x: 0, y: 208, textLength: W, lengthAdjust: 'spacingAndGlyphs' as const, style: { ...font, fontSize: 146 } }
   return (
     <svg viewBox={`0 0 ${W} 214`} className={className} role="img" aria-label="Full-Color Times">
       <defs>
@@ -33,13 +33,12 @@ function StackedWordmark({ className }: { className: string }) {
           <stop offset="1" stopColor="#fff" stopOpacity="0.28" />
         </linearGradient>
       </defs>
-      <text {...crown} fill="url(#fct-spectrum)" fillOpacity="0.55">FULL-COLOR</text>
-      <text {...crown} fill="url(#fct-hi)">FULL-COLOR</text>
-      <text {...crown} fill="url(#fct-lo)">FULL-COLOR</text>
-      <text {...crown} fill="none" stroke="#ffffff" strokeOpacity="0.75" strokeWidth="1.1">FULL-COLOR</text>
-      <rect x="0" y="82" width={W} height="5" rx="2.5" fill="url(#fct-spectrum)" opacity="0.55" />
-      <rect x="0" y="82" width={W} height="2" rx="1" fill="#ffffff" opacity="0.5" />
-      <text x="0" y="208" textLength={W} lengthAdjust="spacingAndGlyphs" fill="#ffffff" style={{ ...font, fontSize: 146 }}>TIMES</text>
+      <text x="0" y="66" textLength={W} lengthAdjust="spacingAndGlyphs" fill="#ffffff" style={{ ...font, fontSize: 76 }}>FULL-COLOR</text>
+      <rect x="0" y="82" width={W} height="2" fill="#ffffff" opacity="0.35" />
+      <text {...times} fill="url(#fct-spectrum)" fillOpacity="0.55">TIMES</text>
+      <text {...times} fill="url(#fct-hi)">TIMES</text>
+      <text {...times} fill="url(#fct-lo)">TIMES</text>
+      <text {...times} fill="none" stroke="#ffffff" strokeOpacity="0.75" strokeWidth="1.1">TIMES</text>
     </svg>
   )
 }
@@ -47,8 +46,8 @@ function StackedWordmark({ className }: { className: string }) {
 function Wordmark({ className }: { className: string }) {
   return (
     <span className={`${playfair.className} ${className} font-black leading-[0.9] tracking-[-0.01em] whitespace-nowrap`} aria-label="Full-Color Times">
-      <span aria-hidden="true" style={{ backgroundImage: cssGradient, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', opacity: 0.92 }}>FULL-COLOR</span>
-      <span className="text-white" aria-hidden="true"> TIMES</span>
+      <span className="text-white" aria-hidden="true">FULL-COLOR </span>
+      <span aria-hidden="true" style={{ backgroundImage: cssGradient, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', opacity: 0.9 }}>TIMES</span>
     </span>
   )
 }
