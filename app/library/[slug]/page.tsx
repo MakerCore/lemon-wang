@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import { TimesMastheadBar } from '@/components/TimesMasthead'
 import { SHELVES, shelfByCode } from '@/lib/library'
 import { SHELF_PAGES } from '@/lib/shelf-pages'
 
@@ -40,11 +41,14 @@ export default function ShelfPage({ params }: { params: { slug: string } }) {
   return (
     <>
       <main className="pt-14">
+        <div className="max-w-[1200px] mx-auto px-4 pt-6 pb-6">
+          <TimesMastheadBar />
+        </div>
         {/* Header band in the shelf colour */}
         <section style={{ background: shelf.color }} className="text-black">
           <div className="max-w-[1200px] mx-auto px-4 pt-6 pb-12">
             <div className="flex flex-wrap justify-between gap-3 font-mono text-xs">
-              <Link href="/#shelves" className="font-bold hover:underline">← Full-Color Times</Link>
+              <Link href="/#shelves" className="font-bold hover:underline">← All shelves</Link>
               <span>Wing A{shelf.group ? ` · ${shelf.group}` : ''} · Shelf {shelf.code}</span>
             </div>
             <p className="font-mono text-sm font-bold mt-12">{shelf.code}</p>
