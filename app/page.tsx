@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
 import ShelfIcon from '@/components/ShelfIcon'
+import TimesMasthead from '@/components/TimesMasthead'
 import { MOCK_PRODUCTS } from '@/lib/mock-data'
 import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
 
@@ -62,10 +63,13 @@ export default function Home() {
         <section className="max-w-[1200px] mx-auto px-4 pt-12 pb-6 animate-fade-up">
           <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <div className="flex flex-col gap-6">
-              <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">
-                Full-Color Times · field reports by Lemon Wang
-              </span>
-              <h1 className="font-sans text-4xl sm:text-5xl lg:text-[56px] font-black leading-[1.05] tracking-tight text-white">
+              <div className="flex flex-col gap-3">
+                <TimesMasthead />
+                <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">
+                  Field reports on full-color 3D printing · by Lemon Wang
+                </span>
+              </div>
+              <h1 className="font-sans text-3xl sm:text-4xl lg:text-[44px] font-black leading-[1.05] tracking-tight text-white">
                 What the world is making — and selling — with{' '}
                 <span className="bg-gradient-to-r from-[#3EC8F0] via-[#FF4FA3] to-[#FFD23F] bg-clip-text text-transparent">full-color</span>{' '}
                 3D printing.
