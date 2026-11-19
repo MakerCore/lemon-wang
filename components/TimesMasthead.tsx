@@ -19,6 +19,21 @@ function Wordmark({ className }: { className: string }) {
   )
 }
 
+/** Stacked wordmark: "Times" on top, FULL-COLOR below, shelf-colour rule underneath. */
+function StackedWordmark({ big, small }: { big: string; small: string }) {
+  return (
+    <span className="inline-flex flex-col items-center" aria-label="Full-Color Times">
+      <span className={`${playfair.className} ${small} font-black leading-none text-white tracking-[0.02em]`} aria-hidden="true">Times</span>
+      <span className={`${playfair.className} ${big} font-black leading-[0.9] tracking-[-0.01em] whitespace-nowrap`} aria-hidden="true">
+        {'FULL-COLOR'.split('').map((ch, i) => (
+          <span key={i} style={{ color: LETTER_COLORS[i] }}>{ch}</span>
+        ))}
+      </span>
+      <span className="mt-2 w-full"><Rule /></span>
+    </span>
+  )
+}
+
 function Rule() {
   return (
     <div className="flex h-1.5 w-full" aria-hidden="true">
@@ -31,10 +46,9 @@ function Rule() {
 export default function TimesMasthead() {
   const issue = getCurrentIssue()
   return (
-    <div className="flex flex-col gap-2">
-      <Wordmark className="text-[44px] sm:text-[64px] lg:text-[80px]" />
-      <Rule />
-      <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 font-mono text-[11px] uppercase tracking-[2px] text-[var(--text-muted)]">
+    <div className="flex flex-col gap-3 items-start">
+      <StackedWordmark big="text-[48px] sm:text-[72px] lg:text-[88px]" small="text-[22px] sm:text-[32px] lg:text-[40px] mb-1" />
+      <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 w-full font-mono text-[11px] uppercase tracking-[2px] text-[var(--text-muted)]">
         <span>{issue.label}</span>
         <span>Field reports on full-color 3D printing · by Lemon Wang</span>
       </div>
