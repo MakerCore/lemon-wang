@@ -70,11 +70,19 @@ export default function Home() {
                 <span className="bg-gradient-to-r from-[#3EC8F0] via-[#FF4FA3] to-[#FFD23F] bg-clip-text text-transparent">full-color</span>{' '}
                 3D printing.
               </h1>
-              <p className="text-[17px] lg:text-[19px] text-[#c9c9c9] leading-relaxed max-w-[620px]">
-                I&apos;m Lemon Wang, full-color product researcher at Flashforge. I go to the factories, expos and
-                forums so you don&apos;t have to — and shelve what I find by application: what people make, who buys
-                it, and how the money works.
-              </p>
+              <div className="flex flex-col gap-3 max-w-[620px]">
+                <p className="text-[17px] lg:text-[19px] text-white leading-relaxed">
+                  I&apos;m Lemon Wang, product manager for full-color 3D printers at Flashforge.
+                </p>
+                <p className="text-[17px] lg:text-[19px] text-white leading-relaxed">
+                  This year I walked expos and factories in 7 countries — the UK, France, Germany, Belgium, the
+                  Netherlands, Spain and Portugal.
+                </p>
+                <p className="text-[17px] lg:text-[19px] text-[#c9c9c9] leading-relaxed">
+                  I go so you don&apos;t have to — and shelve what I find by application: what people make, who buys
+                  it, and how the money works.
+                </p>
+              </div>
               <div className="flex flex-wrap gap-3">
                 <a href="#shelves" className="font-mono text-sm font-bold bg-[var(--highlight)] text-black rounded px-5 py-3 hover:bg-white transition-colors">
                   Browse the shelves →
@@ -88,26 +96,34 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Portrait + shelf spines */}
-            <div className="flex gap-2 h-[360px] lg:h-[420px]">
+            {/* Portrait (transparent PNG, no frame) + a bookshelf of applications */}
+            <div className="flex flex-col">
               <div
-                className="flex-1 rounded-[var(--radius-lg)] border border-[var(--border)]"
+                className="h-[320px] lg:h-[380px]"
                 style={{
-                  backgroundColor: '#141414',
                   backgroundImage: 'url(/lemon-portrait.webp)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center 8%',
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center bottom',
+                  backgroundRepeat: 'no-repeat',
                 }}
                 role="img"
                 aria-label="Portrait of Lemon Wang"
               />
-              <div className="flex flex-col gap-1.5 w-12" aria-hidden="true">
-                {SHELVES.map(s => (
-                  <div key={s.code} className="flex-1 rounded flex items-center justify-center" style={{ background: s.color }}>
-                    <span className="font-mono text-[9px] font-bold text-black">{s.code}</span>
-                  </div>
+              <nav aria-label="Application shelves" className="flex items-end gap-[3px] h-[150px] border-b-[3px] border-[#3a3a3a] pt-2">
+                {SHELVES.map((s, i) => (
+                  <a
+                    key={s.code}
+                    href={s.status === 'open' ? `/library/${s.slug}` : '#shelves'}
+                    title={s.name}
+                    className="flex-1 min-w-0 rounded-t-[3px] flex items-center justify-center hover:-translate-y-1.5 transition-transform"
+                    style={{ background: s.color, height: `${[100, 92, 84, 96, 88, 100, 90, 82, 96, 88, 94, 86, 98, 90][i % 14]}%` }}
+                  >
+                    <span className="font-mono text-[10px] font-bold text-black whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
+                      {s.spine ?? s.name}
+                    </span>
+                  </a>
                 ))}
-              </div>
+              </nav>
             </div>
           </div>
 
@@ -115,7 +131,7 @@ export default function Home() {
           <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden">
             {[
               ['1,486', 'user voices catalogued'],
-              ['2', 'UK factories walked'],
+              ['7', 'countries walked in 2026'],
               ['UKGE', 'expo floor, every aisle'],
               [String(SHELVES.length), 'application shelves'],
             ].map(([n, l], i) => (

@@ -24,7 +24,7 @@ export function buildCatalogue() {
 
   return {
     name: 'The Full-Color Library',
-    curator: { name: 'Lemon Wang', role: 'Full-color product researcher, Flashforge', contact: 'hi@lemon.wang' },
+    curator: { name: 'Lemon Wang', role: 'Product manager, full-color 3D printers, Flashforge', contact: 'hi@lemon.wang' },
     description: 'Field research on what people make and sell with full-color 3D printing, shelved by application.',
     shelves: SHELVES.map(s => ({
       call_number: s.code,

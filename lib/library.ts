@@ -13,6 +13,7 @@ export interface Shelf {
   code: string            // call number, e.g. "A2.1"
   slug: string            // URL slug under /library
   name: string
+  spine?: string          // short label for the hero bookshelf
   group?: string          // parent shelf name, e.g. "Miniatures"
   color: string           // shelf colour (full-colour spectrum)
   status: ShelfStatus     // 'open' = has a shelf page
@@ -35,7 +36,7 @@ export const SHELVES: Shelf[] = [
     status: 'collecting', posts: [],
   },
   {
-    code: 'A2.1', slug: 'tabletop-wargaming', name: 'Tabletop Wargaming', group: 'Miniatures',
+    code: 'A2.1', spine: 'Wargaming', slug: 'tabletop-wargaming', name: 'Tabletop Wargaming', group: 'Miniatures',
     color: '#3EC8F0', status: 'open',
     hook: 'The real full-color buyer: wargamers who want to play, not paint.',
     money: 'Painted terrain sells for £25 vs £11 unpainted. Full-color skips 6–7 hours of painting.',
@@ -43,31 +44,31 @@ export const SHELVES: Shelf[] = [
     seeAlso: ['A2.2', 'A2.3'],
   },
   {
-    code: 'A2.2', slug: 'dollhouses-miniature-food', name: 'Dollhouses & Miniature Food', group: 'Miniatures',
+    code: 'A2.2', spine: 'Dollhouse & Food', slug: 'dollhouses-miniature-food', name: 'Dollhouses & Miniature Food', group: 'Miniatures',
     color: '#9BE6F7', status: 'collecting', posts: [], seeAlso: ['F3'],
   },
   {
-    code: 'A2.3', slug: 'heritage-replicas', name: 'Heritage Replicas', group: 'Miniatures',
+    code: 'A2.3', spine: 'Heritage', slug: 'heritage-replicas', name: 'Heritage Replicas', group: 'Miniatures',
     color: '#2FA3DA', status: 'collecting',
     hook: 'Lost and living landmarks in miniature — down to a single stained-glass panel.',
     posts: [], seeAlso: ['F2.1'],
   },
   {
-    code: 'A3', slug: 'figures-designer-toys', name: 'Figures & Designer Toys', color: '#2EC4B6',
+    code: 'A3', spine: 'Figures & Toys', slug: 'figures-designer-toys', name: 'Figures & Designer Toys', color: '#2EC4B6',
     status: 'collecting', posts: [],
   },
   {
-    code: 'A4', slug: 'personalized-gifts', name: 'Personalized Gifts', color: '#FFD23F',
+    code: 'A4', spine: 'Gifts', slug: 'personalized-gifts', name: 'Personalized Gifts', color: '#FFD23F',
     status: 'collecting', posts: [],
   },
   {
-    code: 'A4.1', slug: 'keepsake-miniatures', name: 'Keepsake Miniatures', group: 'Personalized Gifts',
+    code: 'A4.1', spine: 'Keepsakes', slug: 'keepsake-miniatures', name: 'Keepsake Miniatures', group: 'Personalized Gifts',
     color: '#F2B705', status: 'collecting',
     hook: 'A real place, kept to remember a moment: the factory you just opened, the home you just moved into.',
     posts: [], seeAlso: ['A2'],
   },
   {
-    code: 'A4.2', slug: 'travel-souvenirs', name: 'Travel Souvenirs', group: 'Personalized Gifts',
+    code: 'A4.2', spine: 'Souvenirs', slug: 'travel-souvenirs', name: 'Travel Souvenirs', group: 'Personalized Gifts',
     color: '#FFE27A', status: 'collecting', posts: [],
   },
   {
@@ -83,11 +84,11 @@ export const SHELVES: Shelf[] = [
     code: 'A8', slug: 'accessories', name: 'Accessories', color: '#FFA6D5', status: 'collecting', posts: [],
   },
   {
-    code: 'A9', slug: 'industrial-color-replacement', name: 'Industrial Color Replacement', color: '#C8C8C0',
+    code: 'A9', spine: 'Industrial', slug: 'industrial-color-replacement', name: 'Industrial Color Replacement', color: '#C8C8C0',
     status: 'collecting', posts: [],
   },
   {
-    code: 'A10', slug: 'digital-jewelry', name: 'Digital Jewelry', color: '#FF4FA3', status: 'collecting',
+    code: 'A10', spine: 'Jewelry', slug: 'digital-jewelry', name: 'Digital Jewelry', color: '#FF4FA3', status: 'collecting',
     hook: 'Finished jewelry set with printed gems.',
     posts: [], seeAlso: ['F1'],
   },
