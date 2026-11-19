@@ -1,50 +1,53 @@
 import Link from 'next/link'
 import { Playfair_Display } from 'next/font/google'
-import { SHELVES } from '@/lib/library'
 import { getCurrentIssue } from '@/lib/issue'
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: '900', display: 'swap' })
 
-/** One shelf colour per letter of FULL-COLOR. */
-const LETTER_COLORS = ['#FF6F61', '#3EC8F0', '#9BE6F7', '#2FA3DA', '#2EC4B6', '#FFD23F', '#FF9A4D', '#5BE38A', '#B69CFF', '#FF4FA3']
+/** One continuous spectrum — the brand colour. */
+export const SPECTRUM = ['#FF7A6B', '#FFC94D', '#7BE495', '#4FD1F0', '#8FA8FF', '#C59BFF', '#FF6FB5']
+const cssGradient = `linear-gradient(90deg, ${SPECTRUM.join(', ')})`
+
+/**
+ * Stacked lock-up: an airy full-spectrum FULL-COLOR over a white TIMES,
+ * both exactly the same width. Letters are translucent over a soft glow
+ * of the same gradient, so the colour feels like light, not paint.
+ */
+function StackedWordmark({ className }: { className: string }) {
+  const W = 520
+  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900 }
+  return (
+    <svg viewBox={`0 0 ${W} 214`} className={className} role="img" aria-label="Full-Color Times">
+      <defs>
+        <linearGradient id="fct-spectrum" x1="0" x2="1" y1="0" y2="0">
+          {SPECTRUM.map((c, i) => <stop key={c} offset={i / (SPECTRUM.length - 1)} stopColor={c} />)}
+        </linearGradient>
+        <filter id="fct-glow" x="-10%" y="-40%" width="120%" height="180%">
+          <feGaussianBlur stdDeviation="9" />
+        </filter>
+      </defs>
+      {/* glow */}
+      <text x="0" y="66" textLength={W} lengthAdjust="spacingAndGlyphs" fill="url(#fct-spectrum)" opacity="0.55" filter="url(#fct-glow)" style={{ ...font, fontSize: 76 }}>FULL-COLOR</text>
+      {/* translucent letters */}
+      <text x="0" y="66" textLength={W} lengthAdjust="spacingAndGlyphs" fill="url(#fct-spectrum)" fillOpacity="0.88" style={{ ...font, fontSize: 76 }}>FULL-COLOR</text>
+      {/* rule: same spectrum, fading at both ends */}
+      <rect x="0" y="82" width={W} height="5" rx="2.5" fill="url(#fct-spectrum)" opacity="0.8" />
+      <text x="0" y="208" textLength={W} lengthAdjust="spacingAndGlyphs" fill="#ffffff" style={{ ...font, fontSize: 146 }}>TIMES</text>
+    </svg>
+  )
+}
 
 function Wordmark({ className }: { className: string }) {
   return (
     <span className={`${playfair.className} ${className} font-black leading-[0.9] tracking-[-0.01em] whitespace-nowrap`} aria-label="Full-Color Times">
-      {'FULL-COLOR'.split('').map((ch, i) => (
-        <span key={i} style={{ color: LETTER_COLORS[i] }} aria-hidden="true">{ch}</span>
-      ))}
+      <span aria-hidden="true" style={{ backgroundImage: cssGradient, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', opacity: 0.92 }}>FULL-COLOR</span>
       <span className="text-white" aria-hidden="true"> TIMES</span>
     </span>
   )
 }
 
-/**
- * Stacked lock-up: a full-colour FULL-COLOR crown over a giant white TIMES,
- * both forced to exactly the same width (SVG textLength), with the shelf
- * colour rule between them.
- */
-function StackedWordmark({ className }: { className: string }) {
-  const W = 520
-  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900 }
-  const seg = W / SHELVES.length
-  return (
-    <svg viewBox={`0 0 ${W} 300`} className={className} role="img" aria-label="Full-Color Times">
-      <text x="0" y="78" textLength={W} lengthAdjust="spacing" style={{ ...font, fontSize: 84 }}>
-        {'FULL-COLOR'.split('').map((ch, i) => <tspan key={i} fill={LETTER_COLORS[i]}>{ch}</tspan>)}
-      </text>
-      {SHELVES.map((sh, i) => <rect key={sh.code} x={i * seg} y="96" width={seg + 0.5} height="7" fill={sh.color} />)}
-      <text x="0" y="290" textLength={W} lengthAdjust="spacing" fill="#ffffff" style={{ ...font, fontSize: 210 }}>TIMES</text>
-    </svg>
-  )
-}
-
 function Rule() {
-  return (
-    <div className="flex h-1.5 w-full" aria-hidden="true">
-      {SHELVES.map(s => <span key={s.code} className="flex-1" style={{ background: s.color }} />)}
-    </div>
-  )
+  return <div className="h-1 w-full rounded-full opacity-80" style={{ backgroundImage: cssGradient }} aria-hidden="true" />
 }
 
 /** Large masthead for the homepage. */
