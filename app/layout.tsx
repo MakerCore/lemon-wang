@@ -24,12 +24,12 @@ const GA_ID = 'G-4FTC43XTXD'
 
 const SITE_URL = 'https://www.lemon.wang'
 const DESCRIPTION =
-  'First-hand signal from inside Chinese hardware. Decision frameworks for founders and investors — sour truth, no padding.'
+  'What people make and sell with full-color 3D printing, shelved by application. Field research by Lemon Wang, product manager for full-color 3D printers at Flashforge.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Lemon Wang | Inside Chinese Hardware',
+    default: 'Lemon Wang | Full-Color 3D Printing Field Research',
     template: '%s | Lemon Wang',
   },
   description: DESCRIPTION,
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Lemon Wang',
     url: SITE_URL,
-    title: 'Lemon Wang | Inside Chinese Hardware',
+    title: 'Lemon Wang | Full-Color 3D Printing Field Research',
     description: DESCRIPTION,
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Lemon Wang | Inside Chinese Hardware',
+    title: 'Lemon Wang | Full-Color 3D Printing Field Research',
     description: DESCRIPTION,
   },
   verification: {

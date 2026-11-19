@@ -82,8 +82,12 @@ export default function Navbar() {
             <img src="/logo.png" alt="LEMON.WANG" className="h-10 w-auto" />
           </a>
 
-          {/* Desktop nav — order: 🍋LMT, LabNotes, Work, Tools */}
+          {/* Desktop nav — order: Library, 🍋LMT, LabNotes, Work, Tools */}
           <div className="hidden md:flex items-center gap-8">
+
+            <a href="/#shelves" className="font-mono text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200">
+              Library
+            </a>
 
             {/* 🍋LMT with blinking green dot */}
             <a href="/lmt" className="flex items-center gap-1.5 font-mono text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200">
@@ -186,6 +190,9 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] px-4 py-4 space-y-4">
           <div>
+            <a href="/#shelves" className="block py-2 font-mono text-sm text-[var(--text-secondary)] hover:text-white transition-colors">
+              Library
+            </a>
             <a href="/" className="flex items-center gap-1.5 py-2 font-mono text-sm text-[var(--text-secondary)] hover:text-white transition-colors">
               🍋LMT
               <span className="w-[6px] h-[6px] rounded-full bg-[#22c55e]" style={{ animation: 'blink-dot 1.8s ease-in-out infinite' }} />

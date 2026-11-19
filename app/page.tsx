@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
-import NewsletterForm from '@/components/NewsletterForm'
 import ShelfIcon from '@/components/ShelfIcon'
 import { MOCK_PRODUCTS } from '@/lib/mock-data'
 import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
@@ -114,7 +113,7 @@ export default function Home() {
                 {SHELVES.map((s, i) => (
                   <a
                     key={s.code}
-                    href={s.status === 'open' ? `/library/${s.slug}` : '#shelves'}
+                    href={s.status === 'open' ? `/library/${s.slug}` : `#shelf-${s.slug}`}
                     title={s.name}
                     className="flex-1 min-w-0 rounded-t-[3px] flex flex-col items-center justify-start gap-1.5 pt-1.5 hover:-translate-y-1.5 transition-transform"
                     style={{ background: s.color, height: `${[100, 92, 98, 88, 96, 86, 94, 90, 84, 92, 98, 88, 96, 90][i % 14]}%` }}
@@ -212,9 +211,9 @@ export default function Home() {
                 )
                 const cls = 'flex flex-col bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden'
                 return open ? (
-                  <Link key={s.code} href={`/library/${s.slug}`} className={`${cls} hover:border-[var(--highlight)] hover:-translate-y-0.5 transition-all`}>{inner}</Link>
+                  <Link key={s.code} id={`shelf-${s.slug}`} href={`/library/${s.slug}`} className={`${cls} scroll-mt-20 hover:border-[var(--highlight)] hover:-translate-y-0.5 transition-all`}>{inner}</Link>
                 ) : (
-                  <div key={s.code} className={cls}>{inner}</div>
+                  <div key={s.code} id={`shelf-${s.slug}`} className={`${cls} scroll-mt-20 target:ring-2 target:ring-[var(--highlight)]`}>{inner}</div>
                 )
               })}
             </div>
@@ -333,18 +332,23 @@ export default function Home() {
             </div>
           </section>
 
-          {/* ── NEWSLETTER ── */}
-          <section id="newsletter" className="mt-20 mb-4">
-            <div className="bg-[var(--highlight)] text-black rounded-[var(--radius-lg)] p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-              <div>
-                <h2 className="font-sans text-2xl lg:text-3xl font-black">One field letter a month.</h2>
+          {/* ── FOLLOW ── */}
+          <section id="follow" className="mt-20 mb-4">
+            <div className="bg-[var(--highlight)] text-black rounded-[var(--radius-lg)] p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <h2 className="font-sans text-2xl lg:text-3xl font-black">Follow the field notes.</h2>
                 <p className="text-[15px] mt-2 leading-relaxed">
-                  Who&apos;s making money with full-color 3D printing, and how — straight from the floor. New shelves,
-                  new photos, one sour truth.
+                  Who&apos;s making money with full-color 3D printing, and how — straight from the floor. New shelves
+                  and photos land on LinkedIn first.
                 </p>
               </div>
-              <div className="bg-[#0a0a0a] rounded-[var(--radius-lg)] p-4">
-                <NewsletterForm />
+              <div className="flex flex-wrap gap-3">
+                <a href="https://www.linkedin.com/in/lemonwang0624" target="_blank" rel="noopener noreferrer" className="font-mono text-sm font-bold bg-black text-[var(--highlight)] rounded px-5 py-3 hover:bg-[#222] transition-colors">
+                  Follow on LinkedIn →
+                </a>
+                <a href="mailto:hi@lemon.wang" className="font-mono text-sm font-bold border border-black rounded px-5 py-3 hover:bg-black/10 transition-colors">
+                  hi@lemon.wang
+                </a>
               </div>
             </div>
           </section>

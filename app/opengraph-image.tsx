@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = 'Lemon Wang — Inside Chinese Hardware'
+export const alt = 'Lemon Wang — Full-Color 3D Printing Field Research'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -22,17 +22,17 @@ export default function Image() {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
-              fontSize: 76,
+              fontSize: 64,
               fontWeight: 700,
               color: '#ffffff',
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
             }}
           >
-            Inside Chinese Hardware
+            Who&apos;s making money with full-color 3D printing
           </div>
           <div style={{ fontSize: 32, color: '#999999', marginTop: 24, lineHeight: 1.4 }}>
-            First-hand signal. Decision frameworks. Sour truth, no padding.
+            Field research from 7 countries, shelved by application.
           </div>
         </div>
         <div
