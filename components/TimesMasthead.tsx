@@ -6,6 +6,9 @@ const playfair = Playfair_Display({ subsets: ['latin'], weight: '900', display: 
 
 /** One continuous spectrum — the brand colour. */
 export const SPECTRUM = ['#FF7A6B', '#FFC94D', '#7BE495', '#4FD1F0', '#8FA8FF', '#C59BFF', '#FF6FB5']
+/** The same spectrum, darkened: the side walls of the glass letters. */
+const SPECTRUM_DEEP = ['#803D35', '#806426', '#3E724A', '#286878', '#485480', '#634E80', '#80385A']
+const DEPTH = 9
 const cssGradient = `linear-gradient(90deg, ${SPECTRUM.join(', ')})`
 
 /**
@@ -18,11 +21,17 @@ function StackedWordmark({ className }: { className: string }) {
   const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900 }
   const times = { x: 0, y: 208, textLength: W, lengthAdjust: 'spacingAndGlyphs' as const, style: { ...font, fontSize: 146 } }
   return (
-    <svg viewBox={`0 0 ${W} 214`} className={className} role="img" aria-label="Full-Color Times">
+    <svg viewBox={`0 0 ${W + 16} 230`} className={className} role="img" aria-label="Full-Color Times">
       <defs>
         <linearGradient id="fct-spectrum" x1="0" x2="1" y1="0" y2="0">
           {SPECTRUM.map((c, i) => <stop key={c} offset={i / (SPECTRUM.length - 1)} stopColor={c} />)}
         </linearGradient>
+        <linearGradient id="fct-deep" x1="0" x2="1" y1="0" y2="0">
+          {SPECTRUM_DEEP.map((c, i) => <stop key={c} offset={i / (SPECTRUM_DEEP.length - 1)} stopColor={c} />)}
+        </linearGradient>
+        <filter id="fct-shadow" x="-10%" y="-20%" width="130%" height="160%">
+          <feGaussianBlur stdDeviation="6" />
+        </filter>
         <linearGradient id="fct-hi" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" stopColor="#fff" stopOpacity="0.75" />
           <stop offset="0.42" stopColor="#fff" stopOpacity="0.12" />
@@ -35,7 +44,14 @@ function StackedWordmark({ className }: { className: string }) {
       </defs>
       <text x="0" y="66" textLength={W} lengthAdjust="spacingAndGlyphs" fill="#ffffff" style={{ ...font, fontSize: 76 }}>FULL-COLOR</text>
       <rect x="0" y="82" width={W} height="2" fill="#ffffff" opacity="0.35" />
-      <text {...times} fill="url(#fct-spectrum)" fillOpacity="0.55">TIMES</text>
+      {/* soft shadow on the page */}
+      <text {...times} x={DEPTH + 4} y={208 + DEPTH + 6} fill="#000" opacity="0.55" filter="url(#fct-shadow)">TIMES</text>
+      {/* extruded glass body: stacked layers toward the bottom-right */}
+      {Array.from({ length: DEPTH }, (_, i) => DEPTH - i).map(d => (
+        <text key={d} {...times} x={d * 0.8} y={208 + d} fill="url(#fct-deep)" fillOpacity={0.9}>TIMES</text>
+      ))}
+      {/* front face */}
+      <text {...times} fill="url(#fct-spectrum)" fillOpacity="0.62">TIMES</text>
       <text {...times} fill="url(#fct-hi)">TIMES</text>
       <text {...times} fill="url(#fct-lo)">TIMES</text>
       <text {...times} fill="none" stroke="#ffffff" strokeOpacity="0.75" strokeWidth="1.1">TIMES</text>
