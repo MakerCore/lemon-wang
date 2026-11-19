@@ -19,18 +19,23 @@ function Wordmark({ className }: { className: string }) {
   )
 }
 
-/** Stacked wordmark: "Times" on top, FULL-COLOR below, shelf-colour rule underneath. */
-function StackedWordmark({ big, small }: { big: string; small: string }) {
+/**
+ * Stacked lock-up: a full-colour FULL-COLOR crown over a giant white TIMES,
+ * both forced to exactly the same width (SVG textLength), with the shelf
+ * colour rule between them.
+ */
+function StackedWordmark({ className }: { className: string }) {
+  const W = 520
+  const font = { fontFamily: playfair.style.fontFamily, fontWeight: 900 }
+  const seg = W / SHELVES.length
   return (
-    <span className="inline-flex flex-col items-center" aria-label="Full-Color Times">
-      <span className={`${playfair.className} ${small} font-black leading-none text-white tracking-[0.02em]`} aria-hidden="true">Times</span>
-      <span className={`${playfair.className} ${big} font-black leading-[0.9] tracking-[-0.01em] whitespace-nowrap`} aria-hidden="true">
-        {'FULL-COLOR'.split('').map((ch, i) => (
-          <span key={i} style={{ color: LETTER_COLORS[i] }}>{ch}</span>
-        ))}
-      </span>
-      <span className="mt-2 w-full"><Rule /></span>
-    </span>
+    <svg viewBox={`0 0 ${W} 300`} className={className} role="img" aria-label="Full-Color Times">
+      <text x="0" y="78" textLength={W} lengthAdjust="spacing" style={{ ...font, fontSize: 84 }}>
+        {'FULL-COLOR'.split('').map((ch, i) => <tspan key={i} fill={LETTER_COLORS[i]}>{ch}</tspan>)}
+      </text>
+      {SHELVES.map((sh, i) => <rect key={sh.code} x={i * seg} y="96" width={seg + 0.5} height="7" fill={sh.color} />)}
+      <text x="0" y="290" textLength={W} lengthAdjust="spacing" fill="#ffffff" style={{ ...font, fontSize: 210 }}>TIMES</text>
+    </svg>
   )
 }
 
@@ -46,11 +51,12 @@ function Rule() {
 export default function TimesMasthead() {
   const issue = getCurrentIssue()
   return (
-    <div className="flex flex-col gap-3 items-start">
-      <StackedWordmark big="text-[48px] sm:text-[72px] lg:text-[88px]" small="text-[22px] sm:text-[32px] lg:text-[40px] mb-1" />
-      <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 w-full font-mono text-[11px] uppercase tracking-[2px] text-[var(--text-muted)]">
-        <span>{issue.label}</span>
-        <span>Field reports on full-color 3D printing · by Lemon Wang</span>
+    <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
+      <StackedWordmark className="w-[260px] sm:w-[340px] lg:w-[380px] h-auto" />
+      <div className="flex flex-col gap-1.5 pb-1 font-mono text-[11px] uppercase tracking-[2px] text-[var(--text-muted)]">
+        <span className="text-white">{issue.label}</span>
+        <span>Field reports on full-color 3D printing</span>
+        <span>by Lemon Wang</span>
       </div>
     </div>
   )
