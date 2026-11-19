@@ -17,7 +17,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const shelf = SHELVES.find(s => s.slug === params.slug)
   if (!shelf) return {}
   return {
-    title: `${shelf.code} ${shelf.name} — The Full-Color Library`,
+    title: `${shelf.code} ${shelf.name} — The Full-Color Times`,
     description: shelf.hook,
   }
 }
@@ -44,7 +44,7 @@ export default function ShelfPage({ params }: { params: { slug: string } }) {
         <section style={{ background: shelf.color }} className="text-black">
           <div className="max-w-[1200px] mx-auto px-4 pt-6 pb-12">
             <div className="flex flex-wrap justify-between gap-3 font-mono text-xs">
-              <Link href="/#shelves" className="font-bold hover:underline">← The Full-Color Library</Link>
+              <Link href="/#shelves" className="font-bold hover:underline">← Full-Color Times</Link>
               <span>Wing A{shelf.group ? ` · ${shelf.group}` : ''} · Shelf {shelf.code}</span>
             </div>
             <p className="font-mono text-sm font-bold mt-12">{shelf.code}</p>

@@ -24,12 +24,12 @@ const GA_ID = 'G-4FTC43XTXD'
 
 const SITE_URL = 'https://www.lemon.wang'
 const DESCRIPTION =
-  'What people make and sell with full-color 3D printing, shelved by application. Field research by Lemon Wang, product manager for full-color 3D printers at Flashforge.'
+  'Field reports on who is making money with full-color 3D printing, shelved by application. By Lemon Wang, product manager for full-color 3D printers at Flashforge.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Lemon Wang | Full-Color 3D Printing Field Research',
+    default: 'Lemon Wang | The Full-Color Times',
     template: '%s | Lemon Wang',
   },
   description: DESCRIPTION,
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Lemon Wang',
     url: SITE_URL,
-    title: 'Lemon Wang | Full-Color 3D Printing Field Research',
+    title: 'Lemon Wang | The Full-Color Times',
     description: DESCRIPTION,
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Lemon Wang | Full-Color 3D Printing Field Research',
+    title: 'Lemon Wang | The Full-Color Times',
     description: DESCRIPTION,
   },
   verification: {

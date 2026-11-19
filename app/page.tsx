@@ -63,7 +63,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <div className="flex flex-col gap-6">
               <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">
-                The Full-Color Library · catalogued by Lemon Wang
+                Full-Color Times · field reports by Lemon Wang
               </span>
               <h1 className="font-sans text-4xl sm:text-5xl lg:text-[56px] font-black leading-[1.05] tracking-tight text-white">
                 What the world is making — and selling — with{' '}

@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = 'Lemon Wang — Full-Color 3D Printing Field Research'
+export const alt = 'The Full-Color Times — field reports by Lemon Wang'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -46,7 +46,7 @@ export default function Image() {
             paddingTop: 16,
           }}
         >
-          lemon.wang
+          FULL-COLOR TIMES · lemon.wang
         </div>
       </div>
     ),

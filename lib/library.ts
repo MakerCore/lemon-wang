@@ -1,5 +1,5 @@
 /**
- * The Full-Color Library — single source of truth for shelves, wings and
+ * The Full-Color Times — single source of truth for shelves, wings and
  * call numbers. Used by the homepage, /library/[slug], /llms.txt and
  * /catalogue.json.
  *
