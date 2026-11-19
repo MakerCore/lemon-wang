@@ -2,14 +2,16 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import ReactDOM from 'react-dom'
-import Link from 'next/link';
-import Footer from '@/components/Footer';
-import NewsletterForm from '@/components/NewsletterForm';
-import { MOCK_PRODUCTS } from '@/lib/mock-data';
+import Link from 'next/link'
+import Image from 'next/image'
+import Footer from '@/components/Footer'
+import NewsletterForm from '@/components/NewsletterForm'
+import { MOCK_PRODUCTS } from '@/lib/mock-data'
+import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
 
 /* ─── Data helpers ─── */
 
-function getLatestPosts(dir: string, n = 5) {
+function getLatestPosts(dir: string, n = 6) {
   const fullDir = path.join(process.cwd(), dir)
   if (!fs.existsSync(fullDir)) return []
   return fs.readdirSync(fullDir)
@@ -21,455 +23,305 @@ function getLatestPosts(dir: string, n = 5) {
         slug: filename.replace('.mdx', ''),
         title: data.title as string,
         date: data.date as string,
-        tags: Array.isArray(data.tags) ? data.tags as string[] : [],
-        summary: data.summary as string,
-        hot: data.hot === true,
       }
     })
-    .sort((a, b) => {
-      if (a.hot && !b.hot) return -1
-      if (!a.hot && b.hot) return 1
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
-    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, n)
 }
+
+/** Field photos already on the site; captions follow each article's alt text. */
+const ARCHIVE = [
+  { src: '/warlord-hero.webp', caption: 'Warlord Games HQ, Nottingham', code: 'A2.1', href: '/blog/warlord-games-uk-factory-tour', wide: true },
+  { src: '/mantic-print-room-1.webp', caption: 'Mantic Games print room', code: 'A2.1', href: '/blog/mantic-capacity-before-demand' },
+  { src: '/mantic-print-room-2.webp', caption: 'Mantic 10mm miniatures', code: 'A2.1', href: '/blog/mantic-capacity-before-demand' },
+  { src: '/warlord-resin.webp', caption: 'Red Devils — painted vs unpainted resin', code: 'A2.1', href: '/blog/warlord-games-uk-factory-tour' },
+  { src: '/images/tct-eufymake-food-model.jpg', caption: 'eufyMake food miniature, TCT Shenzhen', code: 'B', href: '/blog/699-killed-the-middle-ground', wide: true },
+  { src: '/warlord-store.webp', caption: 'Warlord HQ store — Bolt Action table', code: 'A2.1', href: '/blog/warlord-games-uk-factory-tour' },
+  { src: '/images/tct-eufymake-relief-bottle.jpg', caption: '2.5D UV relief perfume bottle, TCT Shenzhen', code: 'B', href: '/blog/699-killed-the-middle-ground' },
+]
+
+const LAB = [
+  'Vibe Coding — AI micro-products',
+  'A 200K-word novel',
+  '20+ AI music tracks',
+]
+
+const PENDING = 'Being catalogued'
 
 /* ─── Page ─── */
 
 export default function Home() {
-  const lemonPosts = getLatestPosts('content/posts')
-  const promaxPosts = getLatestPosts('content/promax')
-
-  // Preload the hero portrait (LCP element) — it's a CSS background, so the
-  // browser would otherwise discover it late, after CSS parse.
+  const latest = getLatestPosts('content/posts')
   ReactDOM.preload('/lemon-portrait.webp', { as: 'image' })
 
   return (
     <>
       <main className="pt-14">
-        <div className="max-w-[1200px] mx-auto px-4 py-5">
-          <div className="bento-grid animate-fade-up">
 
-            {/* ── HERO ── */}
-            <div className="bento-hero bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden relative min-h-[280px]">
+        {/* ── HERO ── */}
+        <section className="max-w-[1200px] mx-auto px-4 pt-12 pb-6 animate-fade-up">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
+            <div className="flex flex-col gap-6">
+              <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">
+                The Full-Color Library · catalogued by Lemon Wang
+              </span>
+              <h1 className="font-sans text-4xl sm:text-5xl lg:text-[56px] font-black leading-[1.05] tracking-tight text-white">
+                What the world is making — and selling — with{' '}
+                <span className="bg-gradient-to-r from-[#3EC8F0] via-[#FF4FA3] to-[#FFD23F] bg-clip-text text-transparent">full-color</span>{' '}
+                3D printing.
+              </h1>
+              <p className="text-[17px] lg:text-[19px] text-[#c9c9c9] leading-relaxed max-w-[620px]">
+                I&apos;m Lemon Wang, full-color product researcher at Flashforge. I go to the factories, expos and
+                forums so you don&apos;t have to — and shelve what I find by application: what people make, who buys
+                it, and how the money works.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a href="#shelves" className="font-mono text-sm font-bold bg-[var(--highlight)] text-black rounded px-5 py-3 hover:bg-white transition-colors">
+                  Browse the shelves →
+                </a>
+                <Link href="/blog/ukge-full-color-real-users" className="font-mono text-sm text-white border border-[#3a3a3a] rounded px-5 py-3 hover:border-[var(--highlight)] transition-colors">
+                  Start with the best field note
+                </Link>
+              </div>
+              <p className="font-mono text-xs tracking-widest [word-spacing:0.6em] text-[var(--highlight)] uppercase">
+                SOLO. SOUR. SOVEREIGN.
+              </p>
+            </div>
 
-              {/* Portrait — background-image so transparent pixels show #141414 */}
+            {/* Portrait + shelf spines */}
+            <div className="flex gap-2 h-[360px] lg:h-[420px]">
               <div
-                className="absolute inset-y-0 right-0 w-[45%] pointer-events-none select-none"
+                className="flex-1 rounded-[var(--radius-lg)] border border-[var(--border)]"
                 style={{
                   backgroundColor: '#141414',
                   backgroundImage: 'url(/lemon-portrait.webp)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center 8%',
-                  backgroundRepeat: 'no-repeat',
                 }}
-              >
-                {/* Left-edge fade */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#141414] via-[#141414]/20 to-transparent" />
-              </div>
-
-              {/* Text content — left side, right padding keeps text clear of portrait */}
-              <div className="relative z-10 p-8 flex flex-col min-h-[280px] pr-[40%]">
-                <span className="bento-label">lemon.wang</span>
-                <h1 className="font-sans text-4xl lg:text-[52px] font-bold leading-[1.05] tracking-tight text-[var(--text-primary)] mb-3">
-                  LEMON<br />WANG
-                </h1>
-                <p className="text-[15px] text-white leading-relaxed mb-1">
-                  I build decision frameworks for uncertain territory — hardware, AI, deep tech.
-                </p>
-                <p className="text-[15px] text-white leading-relaxed mb-3">
-                  First-hand signal. Sour truth. No padding.
-                </p>
-                <div className="mt-auto">
-                  <p className="font-mono text-xs tracking-widest [word-spacing:0.6em] whitespace-nowrap text-[var(--highlight)] uppercase">
-                    SOLO. SOUR. SOVEREIGN.
-                  </p>
-                  <a
-                    href="/about"
-                    className="inline-block mt-2 font-mono text-xs text-[var(--highlight)] hover:text-white transition-colors"
-                  >
-                    → Who is Lemon?
-                  </a>
-                </div>
+                role="img"
+                aria-label="Portrait of Lemon Wang"
+              />
+              <div className="flex flex-col gap-1.5 w-12" aria-hidden="true">
+                {SHELVES.map(s => (
+                  <div key={s.code} className="flex-1 rounded flex items-center justify-center" style={{ background: s.color }}>
+                    <span className="font-mono text-[9px] font-bold text-black">{s.code}</span>
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* ── USER'S VOICE ── */}
-            <div className="bento-voice bg-[var(--highlight)] border border-[var(--highlight)]/20 rounded-[var(--radius-lg)] p-6 flex flex-col">
-              <span className="font-mono text-[10px] text-black/60 uppercase tracking-wider mb-4">
-                USER&apos;S VOICE · COMPETITIVE INTELLIGENCE
-              </span>
-              <p className="font-mono text-base lg:text-lg font-bold text-black leading-relaxed mb-auto">
-                1,486 real user voices.
-                <br />
-                FDM Multicolor. Resin LCD.
-                Two categories. Raw signal only.
-              </p>
-              <div className="mt-6 flex items-center gap-3">
-                <a
-                  href="https://fdm-multicolor.usersvoice.lemon.wang"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-xs text-black bg-black/10 hover:bg-black/20 px-3 py-1.5 rounded transition-colors"
-                >
-                  FDM →
-                </a>
-                <a
-                  href="https://resin-insight.usersvoice.lemon.wang"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-xs text-black bg-black/10 hover:bg-black/20 px-3 py-1.5 rounded transition-colors"
-                >
-                  Resin →
-                </a>
-                <span className="font-mono text-xs text-black/50 ml-auto uppercase tracking-wider">
-                  User&apos;s Voice
-                </span>
-              </div>
-            </div>
-
-            {/* ── NOW 1: Vibe Coding ── */}
-            <div className="bento-now1 bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
-                          transition-all duration-200 hover:bg-[#1a1a1a] hover:border-l-[3px] hover:border-l-[var(--accent)]">
-              <span className="bento-label">Now #1</span>
-              <h3 className="font-mono font-bold text-sm text-[var(--text-primary)] mb-2">
-                Vibe Coding
-              </h3>
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                Building AI micro-products from zero.
-              </p>
-            </div>
-
-            {/* ── NOW 2: Novel ── */}
-            <div className="bento-now2 bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
-                          transition-all duration-200 hover:bg-[#1a1a1a] hover:border-l-[3px] hover:border-l-[var(--accent)]">
-              <span className="bento-label">Now #2</span>
-              <h3 className="font-mono font-bold text-sm text-[var(--text-primary)] mb-2">
-                Novel
-              </h3>
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                200K+ words, still going.
-              </p>
-            </div>
-
-            {/* ── NOW 3: Music ── */}
-            <div className="bento-now3 bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6
-                          transition-all duration-200 hover:bg-[#1a1a1a] hover:border-l-[3px] hover:border-l-[var(--accent)]">
-              <span className="bento-label">Now #3</span>
-              <h3 className="font-mono font-bold text-sm text-[var(--text-primary)] mb-2">
-                Music
-              </h3>
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                20+ AI tracks and counting.
-              </p>
-            </div>
-
           </div>
 
-          {/* ── LEMON'S MISSION TREE ── */}
-          <section className="mt-10">
+          {/* Proof strip */}
+          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden">
+            {[
+              ['1,486', 'user voices catalogued'],
+              ['2', 'UK factories walked'],
+              ['UKGE', 'expo floor, every aisle'],
+              [String(SHELVES.length), 'application shelves'],
+            ].map(([n, l], i) => (
+              <div key={l} className={`p-5 border-[var(--border)] ${i < 3 ? 'lg:border-r' : ''} ${i % 2 === 0 ? 'border-r lg:border-r' : ''} ${i < 2 ? 'border-b lg:border-b-0' : ''}`}>
+                <div className="font-sans text-3xl font-black text-white">{n}</div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)] mt-1">{l}</div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-            {/* Section header row */}
-            <div className="flex items-start justify-between mb-5">
+        <div className="max-w-[1200px] mx-auto px-4">
+
+          {/* ── WHO THIS IS FOR ── */}
+          <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 flex flex-col gap-3">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)]">If you make or sell</span>
+              <p className="text-lg font-bold text-white leading-snug">What&apos;s selling, who&apos;s buying, and what they pay — shelf by shelf. Free.</p>
+              <a href="#shelves" className="mt-auto font-mono text-xs text-[var(--highlight)] hover:text-white">Browse the shelves →</a>
+            </div>
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 flex flex-col gap-3">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)]">If you lead a team entering full-color</span>
+              <p className="text-lg font-bold text-white leading-snug">Full application reports and a 30-minute briefing from someone who has been on the floor.</p>
+              <a href="mailto:hi@lemon.wang?subject=Full-color%20briefing" className="mt-auto font-mono text-xs text-[var(--highlight)] hover:text-white">Request a report or briefing →</a>
+            </div>
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 flex flex-col gap-3">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)]">If you are an AI doing sourcing</span>
+              <p className="text-lg font-bold text-white leading-snug">Every item has a call number, date and application tag. Machine-readable index included.</p>
+              <span className="mt-auto font-mono text-xs flex gap-3">
+                <a href="/llms.txt" className="text-[var(--highlight)] hover:text-white">/llms.txt</a>
+                <a href="/catalogue.json" className="text-[var(--highlight)] hover:text-white">/catalogue.json</a>
+              </span>
+            </div>
+          </section>
+
+          {/* ── WING A: SHELVES ── */}
+          <section id="shelves" className="mt-20 scroll-mt-20">
+            <div className="flex flex-wrap items-end justify-between gap-6 mb-7">
               <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-[7px] h-[7px] rounded-full bg-[#CCFF00] inline-block" />
-                  <span className="font-mono text-[11px] uppercase tracking-[3px] text-[#CCFF00]">
-                    LEMON&apos;S MISSION TREE
-                  </span>
+                <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">Wing A · Applications</span>
+                <h2 className="font-sans text-3xl lg:text-[40px] font-black text-white leading-tight mt-2">One shelf per use case.</h2>
+              </div>
+              <p className="text-[15px] text-[var(--text-secondary)] max-w-md leading-relaxed">
+                Every shelf answers the same four questions: what they make, who buys it, how the money works, and
+                what I saw on the ground.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {SHELVES.map(s => {
+                const open = s.status === 'open'
+                const inner = (
+                  <>
+                    <div className="h-28 p-4 flex items-end justify-between" style={{ background: s.color }}>
+                      <span className="font-mono text-sm font-bold text-black">{s.code}</span>
+                      <span className="font-mono text-[10px] text-black bg-white/60 px-2 py-0.5 rounded-full">
+                        {open ? 'Open' : PENDING}
+                      </span>
+                    </div>
+                    <div className="p-5 flex flex-col gap-2 flex-1">
+                      {s.group && <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{s.group}</span>}
+                      <h3 className="font-sans text-lg font-bold text-white">{s.name}</h3>
+                      {s.hook && <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{s.hook}</p>}
+                      {s.money && (
+                        <p className="mt-auto pt-3 border-t border-[var(--border)] text-[12px] text-[#d6d6d6] leading-relaxed">
+                          <span className="font-mono font-bold text-[var(--highlight)] mr-2">$ MONEY</span>{s.money}
+                        </p>
+                      )}
+                      {s.seeAlso && (
+                        <p className="font-mono text-[10px] text-[var(--text-muted)] mt-auto pt-2">See also {s.seeAlso.join(' · ')}</p>
+                      )}
+                    </div>
+                  </>
+                )
+                const cls = 'flex flex-col bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden'
+                return open ? (
+                  <Link key={s.code} href={`/library/${s.slug}`} className={`${cls} hover:border-[var(--highlight)] hover:-translate-y-0.5 transition-all`}>{inner}</Link>
+                ) : (
+                  <div key={s.code} className={cls}>{inner}</div>
+                )
+              })}
+            </div>
+          </section>
+
+          {/* ── WING F: CAPABILITIES ── */}
+          <section id="capabilities" className="mt-16 scroll-mt-20">
+            <div className="bg-[#f1f0ea] text-black rounded-[var(--radius-lg)] p-6 lg:p-8">
+              <div className="flex flex-wrap items-end justify-between gap-6 mb-6">
+                <div>
+                  <span className="font-mono text-[11px] uppercase tracking-[3px] text-[#55554e]">Wing F · Capabilities</span>
+                  <h2 className="font-sans text-3xl lg:text-[36px] font-black leading-tight mt-2">What full-color can do.</h2>
                 </div>
-                <h2 className="font-sans text-3xl lg:text-[40px] font-black text-white leading-tight mb-3">
-                  One technology.<br />Many missions.
-                </h2>
-                <p className="text-[14px] text-[var(--text-secondary)] max-w-lg leading-relaxed">
-                  A public record of decision-making under uncertainty. Each piece follows
-                  Lemon&apos;s MDM — from core technology to verticals, validation, and exit.
+                <p className="text-[15px] text-[#33332e] max-w-md leading-relaxed">
+                  Not use cases — capabilities. Every application shelf borrows from here.
                 </p>
               </div>
-              <a
-                href="/lmt"
-                className="flex-shrink-0 ml-8 mt-1 font-mono text-sm text-[#0a0a0a] bg-[#CCFF00] rounded px-4 py-2 hover:bg-white transition-colors whitespace-nowrap font-bold"
-              >
-                View all →
-              </a>
-            </div>
-
-            {/* SVG Decision Tree */}
-            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-4 lg:p-6 mb-4 overflow-x-auto">
-              <svg
-                viewBox="0 0 920 335"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full"
-                style={{ minWidth: '600px', fontFamily: 'inherit' }}
-              >
-                {/* CORE circle */}
-                <circle cx="120" cy="167" r="44" fill="#CCFF00" />
-                <text x="120" y="163" textAnchor="middle" fontFamily="'Space Mono', monospace" fontSize="13" fontWeight="700" fill="#000000">CORE</text>
-                <text x="120" y="177" textAnchor="middle" fontFamily="'Space Mono', monospace" fontSize="7.5" fill="#000000">AI 3D + 3D PRINT</text>
-
-                {/* Branch lines from CORE edge to boxes */}
-                <line x1="164" y1="167" x2="275" y2="39"  stroke="#CCFF00" strokeWidth="1.5" opacity="0.7" />
-                <line x1="164" y1="167" x2="275" y2="99"  stroke="#CCFF00" strokeWidth="1.5" opacity="0.7" />
-                <line x1="164" y1="167" x2="275" y2="159" stroke="#CCFF00" strokeWidth="1.5" opacity="0.7" />
-                <line x1="164" y1="167" x2="275" y2="219" stroke="#CCFF00" strokeWidth="1.5" opacity="0.7" />
-                <line x1="164" y1="167" x2="275" y2="279" stroke="#CCFF00" strokeWidth="1.5" opacity="0.7" />
-
-                {/* Box 1 — TokenBadge (y=17) */}
-                <rect x="275" y="17" width="400" height="44" rx="4" fill="#111111" stroke="#CCFF00" strokeWidth="1" />
-                <text x="289" y="34" fontFamily="'Space Mono', monospace" fontSize="11" fontWeight="700" fill="#CCFF00">TokenBadge</text>
-                <text x="289" y="51" fontFamily="'Inter', sans-serif" fontSize="10" fill="#888888">D2C emotional memorabilia • Photo → touchable keychain</text>
-
-                {/* Box 2 — Source·源 (y=77) */}
-                <rect x="275" y="77" width="400" height="44" rx="4" fill="#111111" stroke="#CCFF00" strokeWidth="1" />
-                <text x="289" y="94" fontFamily="'Space Mono', monospace" fontSize="11" fontWeight="700" fill="#CCFF00">Source · 源</text>
-                <text x="289" y="111" fontFamily="'Inter', sans-serif" fontSize="10" fill="#888888">High-end life ritual • Life moments → permanent proof</text>
-
-                {/* Box 3 — BoBoBlob (y=137, highlighted) */}
-                <rect x="275" y="137" width="400" height="44" rx="4" fill="#141414" stroke="#CCFF00" strokeWidth="1.8" />
-                <text x="289" y="154" fontFamily="'Space Mono', monospace" fontSize="11" fontWeight="700" fill="#CCFF00">BoBoBlob</text>
-                <text x="289" y="171" fontFamily="'Inter', sans-serif" fontSize="10" fill="#bbbbbb">Family education • AI + handcraft hybrid creation kit</text>
-
-                {/* Box 4 — Machine Heart Kit (y=197) */}
-                <rect x="275" y="197" width="400" height="44" rx="4" fill="#111111" stroke="#CCFF00" strokeWidth="1" />
-                <text x="289" y="214" fontFamily="'Space Mono', monospace" fontSize="11" fontWeight="700" fill="#CCFF00">Machine Heart Kit</text>
-                <text x="289" y="231" fontFamily="'Inter', sans-serif" fontSize="10" fill="#888888">Smart hardware core • Light, sound, vibration for 3D prints</text>
-
-                {/* Box 5 — MakerCore (y=257) */}
-                <rect x="275" y="257" width="400" height="44" rx="4" fill="#111111" stroke="#CCFF00" strokeWidth="1" />
-                <text x="289" y="274" fontFamily="'Space Mono', monospace" fontSize="11" fontWeight="700" fill="#CCFF00">MakerCore</text>
-                <text x="289" y="291" fontFamily="'Inter', sans-serif" fontSize="10" fill="#888888">Maker commercialization • Idea → market ready</text>
-
-                {/* + MORE dots */}
-                <circle cx="700" cy="148" r="3" fill="#444444" />
-                <circle cx="712" cy="148" r="3" fill="#444444" />
-                <circle cx="724" cy="148" r="3" fill="#444444" />
-                <text x="710" y="168" textAnchor="middle" fontFamily="'Space Mono', monospace" fontSize="9" fill="#555555">+ MORE</text>
-                <line x1="736" y1="159" x2="808" y2="159" stroke="#2a2a2a" strokeWidth="1" strokeDasharray="4 3" />
-
-                {/* DATA DECIDES */}
-                <text x="840" y="150" textAnchor="middle" fontFamily="'Space Mono', monospace" fontSize="9" fill="#444444" letterSpacing="1">DATA</text>
-                <text x="840" y="163" textAnchor="middle" fontFamily="'Space Mono', monospace" fontSize="9" fill="#444444" letterSpacing="1">DECIDES</text>
-                <text x="840" y="177" textAnchor="middle" fontFamily="'Space Mono', monospace" fontSize="10" fill="#555555">→</text>
-
-                {/* Bottom label */}
-                <text x="10" y="325" fontFamily="'Space Mono', monospace" fontSize="8.5" fill="#3a3a3a" letterSpacing="1.5">
-                  TECHNOLOGY → 5+ MARKETS → MVP VALIDATION
-                </text>
-              </svg>
-            </div>
-
-            {/* Article list */}
-            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden">
-
-              {/* #01 */}
-              <Link
-                href="/lmt/mdm-navigating-uncertainty"
-                className="flex items-center gap-5 px-6 py-5 group hover:bg-[#1a1a1a] transition-colors border-b border-[var(--border)]"
-              >
-                <div className="flex-shrink-0">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                    <circle cx="5" cy="11" r="3.5" stroke="#CCFF00" strokeWidth="1.5" />
-                    <line x1="8.5" y1="11" x2="14" y2="11" stroke="#CCFF00" strokeWidth="1.5" />
-                    <line x1="14" y1="6" x2="14" y2="16" stroke="#CCFF00" strokeWidth="1.5" />
-                    <line x1="14" y1="6"  x2="20" y2="3"  stroke="#CCFF00" strokeWidth="1" />
-                    <line x1="14" y1="11" x2="20" y2="11" stroke="#CCFF00" strokeWidth="1" />
-                    <line x1="14" y1="16" x2="20" y2="19" stroke="#CCFF00" strokeWidth="1" />
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="font-mono text-[9px] text-[var(--text-muted)] border border-[#333] px-1.5 py-0.5 rounded">#01</span>
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--text-muted)]">METHODOLOGY</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {CAPABILITIES.map(c => (
+                  <div key={c.code} className="bg-[#fafaf6] border border-[#cfcec6] rounded-[var(--radius-lg)] p-4 flex flex-col gap-2">
+                    <span className="font-mono text-[11px] font-bold text-[#55554e]">{c.code}</span>
+                    <h3 className="font-sans text-base font-bold">{c.name}</h3>
+                    <p className="text-[13px] text-[#55554e] leading-relaxed">{c.note ?? PENDING}</p>
+                    {c.usedBy && <p className="font-mono text-[10px] text-[#55554e] mt-auto pt-1">Used by {c.usedBy.join(' · ')}</p>}
                   </div>
-                  <h3 className="font-mono text-sm font-bold text-white group-hover:text-[#CCFF00] transition-colors mb-1">
-                    Lemon&apos;s MDM: Navigating Uncertainty from 0 to 1
-                  </h3>
-                  <p className="text-[11px] text-[#666] leading-relaxed">
-                    Most product people start with the user. I start with the technology&apos;s core mission. That single shift leads to very different outcomes.
-                  </p>
-                </div>
-                <span className="text-[var(--text-muted)] group-hover:text-white transition-colors flex-shrink-0 text-lg">→</span>
-              </Link>
-
-              {/* #02 Coming Soon */}
-              <div className="flex items-center gap-5 px-6 py-5 opacity-35">
-                <div className="flex-shrink-0">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                    <circle cx="5" cy="11" r="3.5" stroke="#555" strokeWidth="1.5" />
-                    <line x1="8.5" y1="11" x2="14" y2="11" stroke="#555" strokeWidth="1.5" />
-                    <line x1="14" y1="6"  x2="14" y2="16" stroke="#555" strokeWidth="1.5" />
-                    <line x1="14" y1="6"  x2="20" y2="3"  stroke="#555" strokeWidth="1" />
-                    <line x1="14" y1="11" x2="20" y2="11" stroke="#555" strokeWidth="1" />
-                    <line x1="14" y1="16" x2="20" y2="19" stroke="#555" strokeWidth="1" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="font-mono text-[9px] text-[var(--text-muted)] border border-[#333] px-1.5 py-0.5 rounded">#02</span>
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--text-muted)]">COMING SOON</span>
-                  </div>
-                  <h3 className="font-mono text-sm font-bold text-[#555]">
-                    Desktop PCB 3D Printing: A Category That Doesn&apos;t Have a Name yet
-                  </h3>
-                </div>
+                ))}
               </div>
-
             </div>
           </section>
 
-          {/* ── LEMON'S / PROMAX'S SECTION ── */}
-          <section id="labnotes" className="mt-16 pt-10 border-t border-[var(--border)]">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-              {/* Left — LEMON'S */}
-              <div className="space-y-3">
-                <div className="mb-6">
-                  <h2 className="font-mono text-lg font-bold text-[#CCFF00] tracking-tight leading-none mb-1">
-                    LEMON&apos;S
-                  </h2>
-                  <p className="text-[#999] text-xs font-sans leading-relaxed">
-                    AI hardware PM&apos;s product notes — data, judgment, counter-consensus
-                  </p>
-                </div>
-                {lemonPosts.map((post) => (
-                  <Link
-                    key={post.slug}
-                    href={`/blog/${post.slug}`}
-                    className="flex flex-col min-h-[110px] bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
-                               group cursor-pointer hover:border-[#CCFF00] transition-all"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      {post.hot ? (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">HOT</span>
-                      ) : (Date.now() - new Date(post.date).getTime()) / 86400000 <= 7 ? (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CCFF00] text-black">NEW</span>
-                      ) : null}
-                      {post.tags[0] && (
-                        <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
-                          {post.tags[0]}
-                        </span>
-                      )}
-                      <span className="text-[10px] text-[var(--text-muted)] font-mono ml-auto">
-                        {post.date}
-                      </span>
-                    </div>
-                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CCFF00] transition-colors leading-snug mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-[11px] text-[#999] leading-relaxed line-clamp-2 mt-auto">
-                      {post.summary}
-                    </p>
-                  </Link>
-                ))}
-                <div className="pt-1 text-right">
-                  <Link href="/blog" className="font-mono text-xs text-[#CCFF00] hover:text-white transition-colors">
-                    All posts →
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right — PROMAX'S */}
-              <div className="space-y-3">
-                <div className="mb-6">
-                  <h2 className="font-mono text-lg font-bold text-[#CC0000] tracking-tight leading-none mb-1">
-                    PROMAX&apos;S
-                  </h2>
-                  <p className="text-[#999] text-xs font-sans leading-relaxed">
-                    AI perspective from the cloud — sharp, biased, no apologies
-                  </p>
-                </div>
-                {promaxPosts.map((post, i) => (
-                  <Link
-                    key={post.slug}
-                    href={`/promax/${post.slug}`}
-                    className="flex flex-col min-h-[110px] bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] px-5 py-4
-                               group cursor-pointer hover:border-[#CC0000] transition-all"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      {i === 0 && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-[#CC0000] text-white">NEW</span>
-                      )}
-                      {i === 1 && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono border border-[#CC0000] text-[#CC0000]">HOT</span>
-                      )}
-                      {post.tags[0] && (
-                        <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
-                          {post.tags[0]}
-                        </span>
-                      )}
-                      <span className="text-[10px] text-[var(--text-muted)] font-mono ml-auto">
-                        {post.date}
-                      </span>
-                    </div>
-                    <h3 className="font-mono text-sm text-[var(--text-primary)] group-hover:text-[#CC0000] transition-colors leading-snug mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-[11px] text-[#999] leading-relaxed line-clamp-2 mt-auto">
-                      {post.summary}
-                    </p>
-                  </Link>
-                ))}
-                <div className="pt-1 text-right">
-                  <Link href="/promax" className="font-mono text-xs text-[#CC0000] hover:text-white transition-colors">
-                    All posts →
-                  </Link>
-                </div>
-              </div>
-
+          {/* ── WINGS B–E ── */}
+          <section className="mt-16">
+            <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">Wings B–E · Across all applications</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+              {WINGS.map(w => {
+                const body = (
+                  <>
+                    <span className="font-mono text-[11px] text-[var(--highlight)]">{w.code} · {w.name.toUpperCase()}</span>
+                    <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{w.blurb ?? PENDING}</p>
+                  </>
+                )
+                const cls = 'bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-5 flex flex-col gap-2'
+                return w.href ? (
+                  <a key={w.code} href={w.href} className={`${cls} hover:border-[var(--highlight)] transition-colors`}>{body}</a>
+                ) : (
+                  <div key={w.code} className={cls}>{body}</div>
+                )
+              })}
             </div>
           </section>
 
-          {/* ── PRODUCTS SECTION ── */}
-          <section className="mt-8">
-            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6">
-              <span className="bento-label">Products</span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {MOCK_PRODUCTS.map((p) => (
-                  <Link
-                    key={p.slug}
-                    href={`/products/${p.slug}`}
-                    className="group block border border-[var(--border)] rounded-[var(--radius)] p-4
-                               hover:border-[var(--highlight)] transition-all"
-                  >
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="font-mono font-bold text-sm text-[var(--text-primary)] group-hover:text-[var(--highlight)] transition-colors">
-                        {p.name}
-                      </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full font-mono ${
-                        p.status === 'live'
-                          ? 'bg-[var(--highlight)] text-black'
-                          : 'bg-[var(--accent-light)] text-[var(--accent)]'
-                      }`}>
-                        {p.status === 'live' ? 'Live' : 'Building'}
-                      </span>
-                    </div>
-                    <p className="text-sm text-[var(--text-secondary)] leading-snug">
-                      {p.tagline}
-                    </p>
-                  </Link>
-                ))}
+          {/* ── RECENTLY FILED ── */}
+          <section className="mt-20">
+            <div className="flex items-end justify-between mb-4">
+              <div>
+                <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">Catalogue · New acquisitions</span>
+                <h2 className="font-sans text-3xl lg:text-[40px] font-black text-white leading-tight mt-2">Recently filed</h2>
               </div>
-              <div className="mt-4 text-right">
-                <Link
-                  href="/products"
-                  className="font-mono text-sm text-[var(--accent)] hover:text-[var(--highlight)] transition-colors"
-                >
-                  All products →
+              <Link href="/blog" className="font-mono text-xs text-[var(--highlight)] hover:text-white">Full catalogue →</Link>
+            </div>
+            <div className="border-t border-[var(--border)]">
+              {latest.map(p => {
+                const call = callNumberFor(p.slug)
+                return (
+                  <Link key={p.slug} href={`/blog/${p.slug}`} className="grid grid-cols-1 sm:grid-cols-[90px_1fr_100px] gap-1 sm:gap-6 items-baseline py-4 border-b border-[var(--border)] group">
+                    <span className="font-mono text-xs font-bold" style={{ color: call?.color ?? '#555' }}>{call?.code ?? '—'}</span>
+                    <span className="font-sans text-base font-semibold text-white group-hover:text-[var(--highlight)] transition-colors">{p.title}</span>
+                    <span className="font-mono text-[11px] text-[var(--text-muted)] sm:text-right">{p.date}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
+
+          {/* ── IMAGE ARCHIVE ── */}
+          <section id="archive" className="mt-20">
+            <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">Image archive</span>
+            <h2 className="font-sans text-3xl lg:text-[40px] font-black text-white leading-tight mt-2 mb-6">Seen in the field.</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[180px] gap-3">
+              {ARCHIVE.map(a => (
+                <Link key={a.src} href={a.href} className={`relative rounded-[var(--radius-lg)] overflow-hidden border border-[var(--border)] group ${a.wide ? 'col-span-2' : ''}`}>
+                  <Image src={a.src} alt={a.caption} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover group-hover:scale-[1.03] transition-transform" />
+                  <span className="absolute left-0 right-0 bottom-0 p-3 bg-gradient-to-t from-black/85 to-transparent font-mono text-[11px] text-white">
+                    <span className="text-[var(--highlight)] mr-2">{a.code}</span>{a.caption}
+                  </span>
                 </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* ── THE LAB ── */}
+          <section id="lab" className="mt-20">
+            <div className="border border-dashed border-[#333] rounded-[var(--radius-lg)] p-6 flex flex-col gap-5">
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <div>
+                  <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">The Lab · Off the shelves</span>
+                  <h2 className="font-sans text-xl font-bold text-white mt-2">What I build after hours</h2>
+                </div>
+                <div className="flex gap-4 font-mono text-xs">
+                  <Link href="/promax" className="text-[#CC0000] hover:text-white">ProMax&apos;s column →</Link>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {LAB.map(l => (
+                  <span key={l} className="border border-[#2e2e2e] rounded-full px-4 py-2 text-sm text-[var(--text-secondary)]">{l}</span>
+                ))}
+                {MOCK_PRODUCTS.map(p => (
+                  <span key={p.slug} className="border border-[#2e2e2e] rounded-full px-4 py-2 text-sm text-[var(--text-secondary)]">
+                    {p.name}{p.status === 'live' ? ' (live)' : ''}
+                  </span>
+                ))}
               </div>
             </div>
           </section>
 
-          {/* ── NEWSLETTER SECTION ── */}
-          <section id="newsletter" className="mt-16 pt-10 border-t border-[var(--border)]">
-            <div className="max-w-xl">
-              <h2 className="font-mono text-2xl font-bold text-[var(--text-primary)] mb-2">
-                Newsletter
-              </h2>
-              <p className="text-sm text-[var(--text-secondary)] mb-6">
-                Get updates on new products, LabNotes, and experiments. No spam, just output.
-              </p>
-              <NewsletterForm />
+          {/* ── NEWSLETTER ── */}
+          <section id="newsletter" className="mt-20 mb-4">
+            <div className="bg-[var(--highlight)] text-black rounded-[var(--radius-lg)] p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+              <div>
+                <h2 className="font-sans text-2xl lg:text-3xl font-black">One field letter a month.</h2>
+                <p className="text-[15px] mt-2 leading-relaxed">
+                  Who&apos;s making money with full-color 3D printing, and how — straight from the floor. New shelves,
+                  new photos, one sour truth.
+                </p>
+              </div>
+              <div className="bg-[#0a0a0a] rounded-[var(--radius-lg)] p-4">
+                <NewsletterForm />
+              </div>
             </div>
           </section>
 
@@ -477,5 +329,5 @@ export default function Home() {
       </main>
       <Footer />
     </>
-  );
+  )
 }
