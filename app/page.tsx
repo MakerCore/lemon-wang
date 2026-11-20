@@ -61,7 +61,7 @@ export default function Home() {
 
         {/* ── HERO ── */}
         <section className="max-w-[1200px] mx-auto px-4 pt-12 pb-6 animate-fade-up">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 items-stretch">
             <div className="flex flex-col gap-6">
               <TimesMasthead />
               <h1 className="font-sans text-3xl sm:text-4xl lg:text-[44px] font-black leading-[1.05] tracking-tight text-white">
@@ -90,19 +90,16 @@ export default function Home() {
                   Start with the best field note
                 </Link>
               </div>
-              <p className="font-mono text-xs tracking-widest [word-spacing:0.6em] text-[var(--highlight)] uppercase">
-                SOLO. SOUR. SOVEREIGN.
-              </p>
             </div>
 
             {/* Portrait (transparent PNG, no frame) + a bookshelf of applications */}
             <div className="flex flex-col">
               <div
-                className="h-[320px] lg:h-[380px]"
+                className="flex-1 min-h-[340px]"
                 style={{
                   backgroundImage: 'url(/lemon-portrait.webp)',
-                  backgroundSize: 'contain',
-                  backgroundPosition: 'center bottom',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center top',
                   backgroundRepeat: 'no-repeat',
                 }}
                 role="img"

@@ -82,6 +82,7 @@ export default function TimesMasthead() {
         <span className="text-white">{issue.label}</span>
         <span>Field reports on full-color 3D printing</span>
         <span>by Lemon Wang</span>
+        <span className="text-[var(--highlight)] [word-spacing:0.6em]">Solo. Sour. Sovereign.</span>
       </div>
     </div>
   )
