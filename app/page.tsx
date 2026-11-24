@@ -129,7 +129,7 @@ export default function Home() {
             {[
               ['1,486', 'user voices catalogued'],
               ['7', 'countries walked in 2026'],
-              ['63', '1-on-1 interviews on record'],
+              ['67', '1-on-1 interviews on record'],
               [String(SHELVES.length), 'application shelves'],
             ].map(([n, l], i) => (
               <div key={l} className={`p-5 border-[var(--border)] ${i < 3 ? 'lg:border-r' : ''} ${i % 2 === 0 ? 'border-r lg:border-r' : ''} ${i < 2 ? 'border-b lg:border-b-0' : ''}`}>

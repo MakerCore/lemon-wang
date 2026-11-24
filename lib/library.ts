@@ -75,6 +75,7 @@ export const SHELVES: Shelf[] = [
     code: 'A4.1', spine: 'Keepsakes', slug: 'keepsake-miniatures', name: 'Keepsake Miniatures', group: 'Personalized Gifts',
     color: '#F2B705', status: 'collecting',
     hook: 'A real place, kept to remember a moment: the factory you just opened, the home you just moved into.',
+    money: 'Photo-to-object keepsakes already sell: 3D laser crystal engraving alone is a ~$1.9B category (2026).',
     posts: [], seeAlso: ['A2'],
   },
   {
@@ -118,6 +119,7 @@ export const SHELVES: Shelf[] = [
   {
     code: 'A10', spine: 'Jewelry', slug: 'digital-jewelry', name: 'Digital Jewelry', color: '#FF4FA3', status: 'collecting',
     hook: 'Finished jewelry set with printed gems.',
+    money: '3D-printed jewelry: a $690–870M market growing 8–15% a year (estimates vary by source).',
     posts: [], seeAlso: ['F1'],
   },
 ]
