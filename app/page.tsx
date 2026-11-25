@@ -9,6 +9,7 @@ import ShelfIcon from '@/components/ShelfIcon'
 import TimesMasthead from '@/components/TimesMasthead'
 import { MOCK_PRODUCTS } from '@/lib/mock-data'
 import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
+import { getSiteStats } from '@/lib/site-stats'
 
 /* ─── Data helpers ─── */
 
@@ -53,6 +54,7 @@ const PENDING = 'Being catalogued'
 
 export default function Home() {
   const latest = getLatestPosts('content/posts')
+  const { stats } = getSiteStats()
   ReactDOM.preload('/lemon-portrait.webp', { as: 'image' })
 
   return (
@@ -126,15 +128,10 @@ export default function Home() {
 
           {/* Proof strip */}
           <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 border border-[var(--border)] rounded-[var(--radius-lg)] overflow-hidden">
-            {[
-              ['1,486', 'user voices catalogued'],
-              ['7', 'countries walked in 2026'],
-              ['67', '1-on-1 interviews on record'],
-              [String(SHELVES.length), 'application shelves'],
-            ].map(([n, l], i) => (
-              <div key={l} className={`p-5 border-[var(--border)] ${i < 3 ? 'lg:border-r' : ''} ${i % 2 === 0 ? 'border-r lg:border-r' : ''} ${i < 2 ? 'border-b lg:border-b-0' : ''}`}>
-                <div className="font-sans text-3xl font-black text-white">{n}</div>
-                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)] mt-1">{l}</div>
+            {stats.map((st, i) => (
+              <div key={st.key} title={st.source} className={`p-5 border-[var(--border)] ${i < stats.length - 1 ? 'lg:border-r' : ''} ${i % 2 === 0 ? 'border-r lg:border-r' : ''} ${i < 2 ? 'border-b lg:border-b-0' : ''}`}>
+                <div className="font-sans text-3xl font-black text-white">{st.value}</div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)] mt-1">{st.label}</div>
               </div>
             ))}
           </div>

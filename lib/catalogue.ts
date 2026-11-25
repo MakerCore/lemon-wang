@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
+import { getSiteStats } from '@/lib/site-stats'
 
 export const BASE = 'https://www.lemon.wang'
 
@@ -26,6 +27,7 @@ export function buildCatalogue() {
     name: 'The Full-Color Times',
     curator: { name: 'Lemon Wang', role: 'Product manager, full-color 3D printers, Flashforge', contact: 'hi@lemon.wang' },
     description: 'Field reports on who is making money with full-color 3D printing, shelved by application.',
+    stats: getSiteStats(),
     shelves: SHELVES.map(s => ({
       call_number: s.code,
       name: s.name,

@@ -1,0 +1,9 @@
+{
+  "_readme": "Numbers shown on the homepage proof strip. Edit a value, commit, and Vercel redeploys. 'shelves' is counted automatically from lib/library.ts and needs no entry here.",
+  "updated": "2026-11-24",
+  "stats": [
+    { "key": "user_voices", "value": "1,486", "label": "user voices catalogued", "source": "User's Voice databases (FDM Multicolor, Resin LCD)" },
+    { "key": "countries", "value": "7", "label": "countries walked in 2026", "source": "UK, France, Germany, Belgium, Netherlands, Spain, Portugal" },
+    { "key": "interviews", "value": "67", "label": "1-on-1 interviews on record", "source": "Sessions with a recording or transcript in the research vault; one per counterpart" }
+  ]
+}

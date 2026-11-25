@@ -11,6 +11,8 @@ export function GET() {
   lines.push('')
   lines.push(`Machine-readable version: ${BASE}/catalogue.json`)
   lines.push('')
+  lines.push(`Research base (as of ${c.stats.updated ?? 'n/a'}): ` + c.stats.stats.map(st => `${st.value} ${st.label}`).join(' · '))
+  lines.push('')
   lines.push('## Application shelves (Wing A)')
   for (const s of c.shelves) {
     const detail = [s.finding, s.money].filter(Boolean).join(' ')
