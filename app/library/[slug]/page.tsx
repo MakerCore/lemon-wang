@@ -1,6 +1,3 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -8,6 +5,7 @@ import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import { TimesMastheadBar } from '@/components/TimesMasthead'
 import { SHELVES, shelfByCode } from '@/lib/library'
+import { getPostsOnShelf } from '@/lib/posts'
 import { SHELF_PAGES } from '@/lib/shelf-pages'
 
 export function generateStaticParams() {
@@ -23,19 +21,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 }
 
-function getPost(slug: string) {
-  const file = path.join(process.cwd(), 'content/posts', `${slug}.mdx`)
-  if (!fs.existsSync(file)) return null
-  const { data } = matter(fs.readFileSync(file, 'utf-8'))
-  return { slug, title: data.title as string, date: data.date as string, summary: data.summary as string }
-}
-
 export default function ShelfPage({ params }: { params: { slug: string } }) {
   const shelf = SHELVES.find(s => s.slug === params.slug)
   const page = SHELF_PAGES[params.slug]
   if (!shelf || shelf.status !== 'open' || !page) notFound()
 
-  const posts = shelf.posts.map(getPost).filter(Boolean) as NonNullable<ReturnType<typeof getPost>>[]
+  const posts = getPostsOnShelf(shelf.slug)
   const related = (shelf.seeAlso ?? []).map(c => shelfByCode(c)).filter(Boolean)
 
   return (
@@ -58,7 +49,7 @@ export default function ShelfPage({ params }: { params: { slug: string } }) {
               <a href="#money" className="bg-black px-3 py-2 rounded-full" style={{ color: shelf.color }}>How the money works</a>
               <a href="#findings" className="border border-black px-3 py-2 rounded-full">Findings</a>
               <a href="#album" className="border border-black px-3 py-2 rounded-full">Album</a>
-              <a href="#notes" className="border border-black px-3 py-2 rounded-full">Field notes · {posts.length}</a>
+              {posts.length > 0 && <a href="#notes" className="border border-black px-3 py-2 rounded-full">Field notes · {posts.length}</a>}
               {related.length > 0 && <a href="#see-also" className="border border-black px-3 py-2 rounded-full">See also</a>}
             </nav>
           </div>
@@ -128,18 +119,20 @@ export default function ShelfPage({ params }: { params: { slug: string } }) {
           </section>
 
           {/* Field notes */}
-          <section id="notes" className="mt-16 scroll-mt-20">
-            <h2 className="font-sans text-2xl sm:text-3xl font-black text-white mb-2">Field notes</h2>
-            <div>
-              {posts.map(p => (
-                <Link key={p.slug} href={`/blog/${p.slug}`} className="block py-5 border-b border-[var(--border)] group">
-                  <span className="font-mono text-[11px]" style={{ color: shelf.color }}>{shelf.code} · {p.date}</span>
-                  <h3 className="font-sans text-lg font-semibold text-white group-hover:text-[var(--highlight)] transition-colors mt-1">{p.title}</h3>
-                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed mt-1 line-clamp-2">{p.summary}</p>
-                </Link>
-              ))}
-            </div>
-          </section>
+          {posts.length > 0 && (
+            <section id="notes" className="mt-16 scroll-mt-20">
+              <h2 className="font-sans text-2xl sm:text-3xl font-black text-white mb-2">Field notes</h2>
+              <div>
+                {posts.map(p => (
+                  <Link key={p.slug} href={`/blog/${p.slug}`} className="block py-5 border-b border-[var(--border)] group">
+                    <span className="font-mono text-[11px]" style={{ color: shelf.color }}>{shelf.code} · {p.date}</span>
+                    <h3 className="font-sans text-lg font-semibold text-white group-hover:text-[var(--highlight)] transition-colors mt-1">{p.title}</h3>
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed mt-1 line-clamp-2">{p.summary}</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Report CTA + see also */}
           <section className="mt-16 mb-6 grid grid-cols-1 lg:grid-cols-2 gap-4">

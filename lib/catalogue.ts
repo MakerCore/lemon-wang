@@ -1,27 +1,18 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
+import { SHELVES, CAPABILITIES, WINGS } from '@/lib/library'
+import { getAllPosts, callNumberFor } from '@/lib/posts'
 import { getSiteStats } from '@/lib/site-stats'
 
 export const BASE = 'https://www.lemon.wang'
 
 export function buildCatalogue() {
-  const dir = path.join(process.cwd(), 'content/posts')
-  const posts = fs.existsSync(dir)
-    ? fs.readdirSync(dir).filter(f => f.endsWith('.mdx')).map(f => {
-        const { data } = matter(fs.readFileSync(path.join(dir, f), 'utf-8'))
-        const slug = f.replace('.mdx', '')
-        return {
-          call_number: callNumberFor(slug)?.code ?? null,
-          title: data.title as string,
-          date: data.date as string,
-          summary: data.summary as string,
-          tags: Array.isArray(data.tags) ? data.tags : [],
-          url: `${BASE}/blog/${slug}`,
-        }
-      }).sort((a, b) => (a.date < b.date ? 1 : -1))
-    : []
+  const posts = getAllPosts().map(p => ({
+    call_number: callNumberFor(p)?.code ?? null,
+    title: p.title,
+    date: p.date,
+    summary: p.summary,
+    tags: p.tags,
+    url: `${BASE}/blog/${p.slug}`,
+  }))
 
   return {
     name: 'The Full-Color Times',

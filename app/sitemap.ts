@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { SHELVES } from '@/lib/library'
 
 const BASE = 'https://www.lemon.wang'
 
@@ -39,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/promax`, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${BASE}/lmt`, changeFrequency: 'monthly' as const, priority: 0.6 },
     { url: `${BASE}/about`, changeFrequency: 'monthly' as const, priority: 0.6 },
-    { url: `${BASE}/library/tabletop-wargaming`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    ...SHELVES.filter(s => s.status === 'open').map(s => ({ url: `${BASE}/library/${s.slug}`, changeFrequency: 'monthly' as const, priority: 0.8 })),
     { url: `${BASE}/tools/print-cost`, changeFrequency: 'monthly' as const, priority: 0.5 },
     { url: `${BASE}/tools/uv-data-engine`, changeFrequency: 'monthly' as const, priority: 0.5 },
   ].map(r => ({ ...r, lastModified: new Date() }))

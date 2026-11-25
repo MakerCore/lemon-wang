@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import JsonLd from '@/components/JsonLd'
+import { getAllPosts } from '@/lib/posts'
 
 const postsDir = path.join(process.cwd(), 'content/posts')
 
@@ -14,25 +15,6 @@ function getPost(slug: string) {
   const raw = fs.readFileSync(filePath, 'utf-8')
   const { data, content } = matter(raw)
   return { data, content }
-}
-
-function getOtherPosts(currentSlug: string) {
-  const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.mdx'))
-  return files
-    .filter(f => f.replace('.mdx', '') !== currentSlug)
-    .map(filename => {
-      const raw = fs.readFileSync(path.join(postsDir, filename), 'utf-8')
-      const { data } = matter(raw)
-      return {
-        slug: filename.replace('.mdx', ''),
-        title: data.title,
-        date: data.date,
-        tags: Array.isArray(data.tags) ? data.tags : (data.tag ? [data.tag] : []),
-        summary: data.summary,
-      }
-    })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 2)
 }
 
 function plainText(markdown: string) {
@@ -102,7 +84,11 @@ const mdxComponents = {
 export default function PostPage({ params }: { params: { slug: string } }) {
   const { data, content } = getPost(params.slug)
   const tags: string[] = Array.isArray(data.tags) ? data.tags : (data.tag ? [data.tag] : [])
-  const otherPosts = getOtherPosts(params.slug)
+  const allPosts = getAllPosts()
+  const otherPosts = allPosts.filter(p => p.slug !== params.slug).slice(0, 2)
+  // Show the cover unless the article body already places the same image.
+  const cover = allPosts.find(p => p.slug === params.slug)?.cover
+  const showCover = cover && !content.includes(cover.src)
 
   const description = data.description ?? data.summary ?? ''
   const faqs = getFieldFaq(content)
@@ -162,6 +148,11 @@ export default function PostPage({ params }: { params: { slug: string } }) {
 
       <h1 className="font-mono text-white text-2xl mb-4 leading-tight">{data.title}</h1>
       <p className="text-[#999] text-xs font-mono mb-12">{data.date}</p>
+
+      {showCover && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={cover.src} alt={cover.alt} className="w-full h-auto rounded-lg mb-12" />
+      )}
 
       <article className="
         prose prose-invert max-w-none

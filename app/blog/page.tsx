@@ -1,8 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getAllPosts } from '@/lib/posts'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -11,27 +9,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blog' },
 }
 
-function getPosts() {
-  const postsDir = path.join(process.cwd(), 'content/posts')
-  const files = fs.readdirSync(postsDir)
-  return files
-    .filter(f => f.endsWith('.mdx'))
-    .map(filename => {
-      const raw = fs.readFileSync(path.join(postsDir, filename), 'utf-8')
-      const { data } = matter(raw)
-      return {
-        slug: filename.replace('.mdx', ''),
-        title: data.title,
-        date: data.date,
-        tags: Array.isArray(data.tags) ? data.tags : (data.tag ? [data.tag] : []),
-        summary: data.summary,
-      }
-    })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-}
-
 export default function BlogPage() {
-  const posts = getPosts()
+  const posts = getAllPosts()
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-16 max-w-3xl mx-auto">
       <h1 className="font-mono text-[#CCFF00] text-2xl mb-12 tracking-tight">

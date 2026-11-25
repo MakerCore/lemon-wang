@@ -1,6 +1,3 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
 import ReactDOM from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,39 +5,14 @@ import Footer from '@/components/Footer'
 import ShelfIcon from '@/components/ShelfIcon'
 import TimesMasthead from '@/components/TimesMasthead'
 import { MOCK_PRODUCTS } from '@/lib/mock-data'
-import { SHELVES, CAPABILITIES, WINGS, callNumberFor } from '@/lib/library'
+import { SHELVES, CAPABILITIES, WINGS } from '@/lib/library'
+import { getAllPosts, getArchivePhotos, getStartHere, callNumberFor } from '@/lib/posts'
 import { getSiteStats } from '@/lib/site-stats'
 
-/* ─── Data helpers ─── */
-
-function getLatestPosts(dir: string, n = 6) {
-  const fullDir = path.join(process.cwd(), dir)
-  if (!fs.existsSync(fullDir)) return []
-  return fs.readdirSync(fullDir)
-    .filter(f => f.endsWith('.mdx'))
-    .map(filename => {
-      const raw = fs.readFileSync(path.join(fullDir, filename), 'utf-8')
-      const { data } = matter(raw)
-      return {
-        slug: filename.replace('.mdx', ''),
-        title: data.title as string,
-        date: data.date as string,
-      }
-    })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, n)
-}
-
-/** Field photos already on the site; captions follow each article's alt text. */
-const ARCHIVE = [
-  { src: '/warlord-hero.webp', caption: 'Warlord Games HQ, Nottingham', code: 'A2.1', href: '/blog/warlord-games-uk-factory-tour', wide: true },
-  { src: '/mantic-print-room-1.webp', caption: 'Mantic Games print room', code: 'A2.1', href: '/blog/mantic-capacity-before-demand' },
-  { src: '/mantic-print-room-2.webp', caption: 'Mantic 10mm miniatures', code: 'A2.1', href: '/blog/mantic-capacity-before-demand' },
-  { src: '/warlord-resin.webp', caption: 'Red Devils — painted vs unpainted resin', code: 'A2.1', href: '/blog/warlord-games-uk-factory-tour' },
-  { src: '/images/tct-eufymake-food-model.jpg', caption: 'eufyMake food miniature, TCT Shenzhen', code: 'B', href: '/blog/699-killed-the-middle-ground', wide: true },
-  { src: '/warlord-store.webp', caption: 'Warlord HQ store — Bolt Action table', code: 'A2.1', href: '/blog/warlord-games-uk-factory-tour' },
-  { src: '/images/tct-eufymake-relief-bottle.jpg', caption: '2.5D UV relief perfume bottle, TCT Shenzhen', code: 'B', href: '/blog/699-killed-the-middle-ground' },
-]
+const RECENT_COUNT = 6
+const ARCHIVE_COUNT = 7
+/** Archive tiles that span two columns. */
+const WIDE_TILES = [0, 4]
 
 const LAB = [
   'Vibe Coding — AI micro-products',
@@ -53,7 +25,9 @@ const PENDING = 'Being catalogued'
 /* ─── Page ─── */
 
 export default function Home() {
-  const latest = getLatestPosts('content/posts')
+  const latest = getAllPosts().slice(0, RECENT_COUNT)
+  const archive = getArchivePhotos(ARCHIVE_COUNT)
+  const startHere = getStartHere()
   const { stats } = getSiteStats()
   ReactDOM.preload('/lemon-portrait.webp', { as: 'image' })
 
@@ -88,9 +62,11 @@ export default function Home() {
                 <a href="#shelves" className="font-mono text-sm font-bold bg-[var(--highlight)] text-black rounded px-5 py-3 hover:bg-white transition-colors">
                   Browse the shelves →
                 </a>
-                <Link href="/blog/ukge-full-color-real-users" className="font-mono text-sm text-white border border-[#3a3a3a] rounded px-5 py-3 hover:border-[var(--highlight)] transition-colors">
-                  Start with the best field note
-                </Link>
+                {startHere && (
+                  <Link href={`/blog/${startHere.slug}`} className="font-mono text-sm text-white border border-[#3a3a3a] rounded px-5 py-3 hover:border-[var(--highlight)] transition-colors">
+                    Start with the best field note
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -272,7 +248,7 @@ export default function Home() {
             </div>
             <div className="border-t border-[var(--border)]">
               {latest.map(p => {
-                const call = callNumberFor(p.slug)
+                const call = callNumberFor(p)
                 return (
                   <Link key={p.slug} href={`/blog/${p.slug}`} className="grid grid-cols-1 sm:grid-cols-[90px_1fr_100px] gap-1 sm:gap-6 items-baseline py-4 border-b border-[var(--border)] group">
                     <span className="font-mono text-xs font-bold" style={{ color: call?.color ?? '#555' }}>{call?.code ?? '—'}</span>
@@ -289,14 +265,17 @@ export default function Home() {
             <span className="font-mono text-[11px] uppercase tracking-[3px] text-[var(--text-muted)]">Image archive</span>
             <h2 className="font-sans text-3xl lg:text-[40px] font-black text-white leading-tight mt-2 mb-6">Seen in the field.</h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[180px] gap-3">
-              {ARCHIVE.map(a => (
-                <Link key={a.src} href={a.href} className={`relative rounded-[var(--radius-lg)] overflow-hidden border border-[var(--border)] group ${a.wide ? 'col-span-2' : ''}`}>
-                  <Image src={a.src} alt={a.caption} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover group-hover:scale-[1.03] transition-transform" />
-                  <span className="absolute left-0 right-0 bottom-0 p-3 bg-gradient-to-t from-black/85 to-transparent font-mono text-[11px] text-white">
-                    <span className="text-[var(--highlight)] mr-2">{a.code}</span>{a.caption}
-                  </span>
-                </Link>
-              ))}
+              {archive.map(({ photo, post }, i) => {
+                const call = callNumberFor(post)
+                return (
+                  <Link key={photo.src} href={`/blog/${post.slug}`} className={`relative rounded-[var(--radius-lg)] overflow-hidden border border-[var(--border)] group ${WIDE_TILES.includes(i) ? 'col-span-2' : ''}`}>
+                    <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover group-hover:scale-[1.03] transition-transform" />
+                    <span className="absolute left-0 right-0 bottom-0 p-3 bg-gradient-to-t from-black/85 to-transparent font-mono text-[11px] text-white">
+                      {call && <span className="text-[var(--highlight)] mr-2">{call.code}</span>}{photo.caption}
+                    </span>
+                  </Link>
+                )
+              })}
             </div>
           </section>
 

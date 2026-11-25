@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Playfair_Display } from 'next/font/google'
 import { getCurrentIssue } from '@/lib/issue'
+import { getAllPosts } from '@/lib/posts'
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: '900', display: 'swap' })
 
@@ -75,11 +76,17 @@ function Rule() {
 /** Large masthead for the homepage. */
 export default function TimesMasthead() {
   const issue = getCurrentIssue()
+  const latest = getAllPosts()[0]
   return (
     <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
       <StackedWordmark className="w-[260px] sm:w-[340px] lg:w-[380px] h-auto" />
       <div className="flex flex-col gap-1.5 pb-1 font-mono text-[11px] uppercase tracking-[2px] text-[var(--text-muted)]">
         <span className="text-white">{issue.label}</span>
+        {latest && (
+          <Link href={`/blog/${latest.slug}`} className="normal-case tracking-normal leading-relaxed hover:text-[var(--highlight)] transition-colors">
+            Latest · {latest.date} · {latest.title} →
+          </Link>
+        )}
         <span>Field reports on full-color 3D printing</span>
         <span>by Lemon Wang</span>
         <span className="text-[var(--highlight)] [word-spacing:0.6em]">Solo. Sour. Sovereign.</span>
